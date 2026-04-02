@@ -26,6 +26,7 @@ export type Plant = {
   fynbos_region: string;
   description: string;
   image_url: string;
+  reference_urls: string[];
   seasonal_tasks: SeasonalTask[];
   roof_proven: boolean;
 };

@@ -11,22 +11,25 @@ Update it as decisions change during the build.
 - [x] Next.js 16.2.2 project scaffolded (TypeScript, Tailwind 4, App Router, ESLint)
 - [x] Dependencies installed: `@supabase/supabase-js`, `@supabase/ssr`, `next-mdx-remote`, `recharts`
 - [x] Supabase project created, all 7 tables created, RLS policies set, admin user created
-- [x] `.env.local` configured with Supabase URL, anon key, service role key
+- [x] `.env` configured with Supabase URL, anon key, service role key
 - [x] `lib/types.ts` — all TypeScript types
 - [x] `lib/supabase.ts` — browser client (`createClient`)
 - [x] `lib/supabase-server.ts` — server client (`createServerSupabaseClient`) — **note: split into separate file from browser client to avoid `next/headers` bundling into client components**
 - [x] `middleware.ts` — protects all `/admin/*` routes, redirects to `/admin/login`
 - [x] `app/admin/login/page.tsx` — working email/password login form
-- [x] Placeholder pages: `/admin/map`, `/admin/plants`, `/admin/log`, `/admin/tasks`, `/admin/journal`
 - [x] Auth flow tested and confirmed working
+- [x] `lib/seed-plants.ts` — 9 fynbos plants seeded, includes `reference_urls` (jsonb array)
+- [x] `lib/zones-seed.ts` — 4 zones seeded with SVG coordinates (580×424 inner canvas, 25px offset)
+- [x] `plants` table: added `reference_urls jsonb NOT NULL DEFAULT '[]'` column
+- [x] `/admin/plants` — plant library CRUD: table view, add/edit/delete form with dynamic seasonal tasks and reference URLs, right panel UI
+- [x] `/admin/map` — SVG roof map with zone fills, entry path, north arrow (top-right of Zone C), SE wind indicator, stairs marker; View mode (click dot to edit position) and Add dot mode (click map to place); right panel position form
 
 ### In progress
-- [ ] Plant seed data — owner researching fynbos species, will populate `lib/seed-plants.ts`
+- [ ] `/admin/log` — care log + watering log forms
 
 ### Up next (follow this order)
-- [ ] Run seed data: `npx tsx lib/seed-plants.ts` (requires `npm install -D tsx`)
-- [ ] `/admin/plants` — plant library CRUD UI
-- [ ] `/admin/map` — zone + plant position editor with SVG map
+- [ ] `/admin/tasks` — task list + add task form
+- [ ] `/admin/journal` — journal post management
 - [ ] `/admin/log` — care log + watering log forms
 - [ ] `/admin/tasks` — task list + add task form
 - [ ] `/admin/journal` — journal post management
@@ -134,6 +137,7 @@ bloom_season    text          -- e.g. "Dec–Apr"
 fynbos_region   text          -- e.g. "Overberg", "Cape Peninsula"
 description     text
 image_url       text
+reference_urls  jsonb         -- string[] of reference URLs
 seasonal_tasks  jsonb         -- [{ month_start: 6, month_end: 8, task: "Prune hard" }]
 roof_proven     boolean       DEFAULT false
 ```
@@ -532,3 +536,27 @@ We are starting Phase 1 of the build. Do the following in order:
 
 Do not build anything else yet. Check in when done.
 ```
+
+---
+
+## SVG map details
+
+### Entry path
+Dashed line running south along the west wall from hatch to SW corner:
+
+```tsx
+<path d="M 50 72 L 50 354" stroke="#0F6E56" strokeWidth="1.2"
+  strokeDasharray="4 3" markerEnd="url(#arrow)" fill="none"/>
+```
+
+### Wind indicator
+SE wind arrows rendered outside the parapet in the bottom-right corner.
+Static SVG — not driven by data. Live wind data comes from Open-Meteo and is displayed on the dashboard, not on the map.
+
+### North arrow
+Rendered in the centre of Zone D pointing upward.
+
+### Mobile view
+On screens below 768px, do not render the SVG map.
+Render a card list of `plant_positions` grouped by zone name instead.
+Each card shows: plant name, zone badge, health status badge, last care action.
