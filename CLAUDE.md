@@ -18,20 +18,19 @@ Update it as decisions change during the build.
 - [x] `middleware.ts` — protects all `/admin/*` routes, redirects to `/admin/login`
 - [x] `app/admin/login/page.tsx` — working email/password login form
 - [x] Auth flow tested and confirmed working
-- [x] `lib/seed-plants.ts` — 9 fynbos plants seeded, includes `reference_urls` (jsonb array)
+- [x] `lib/seed-plants.ts` — 31 fynbos plants seeded, includes `reference_urls` (jsonb array)
+- [x] `scripts/seed-plants.ts` — one-off seed script, run with `npx tsx --env-file=.env scripts/seed-plants.ts`; upserts on `slug` so safe to re-run
 - [x] `lib/zones-seed.ts` — 4 zones seeded with SVG coordinates (580×424 inner canvas, 25px offset)
 - [x] `plants` table: added `reference_urls jsonb NOT NULL DEFAULT '[]'` column
 - [x] `/admin/plants` — plant library CRUD: table view, add/edit/delete form with dynamic seasonal tasks and reference URLs, right panel UI
 - [x] `/admin/map` — SVG roof map with zone fills, entry path, north arrow (top-right of Zone C), SE wind indicator, stairs marker; View mode (click dot to edit position) and Add dot mode (click map to place); right panel position form
+- [x] `/admin/log` — care log + watering log forms side by side (desktop) / tabbed (mobile); server actions in `app/admin/log/actions.ts`
+- [x] `/admin/tasks` — incomplete task list sorted by due date (overdue highlighted), mark done button, add task form; server actions in `app/admin/tasks/actions.ts`
 
 ### In progress
-- [ ] `/admin/log` — care log + watering log forms
+- [ ] `/admin/journal` — journal post management
 
 ### Up next (follow this order)
-- [ ] `/admin/tasks` — task list + add task form
-- [ ] `/admin/journal` — journal post management
-- [ ] `/admin/log` — care log + watering log forms
-- [ ] `/admin/tasks` — task list + add task form
 - [ ] `/admin/journal` — journal post management
 - [ ] `/garden` — public SVG map with slide-in panel
 - [ ] `/dashboard` — widgets (weather, attention panel, health snapshot, bloom calendar, watering chart)
@@ -53,6 +52,35 @@ It serves two purposes:
   and data visualisation
 
 The site is public-facing. Only one person (the owner) can log in and manage data.
+
+---
+
+## Design system
+
+### Fonts
+Loaded via `next/font/google` in `app/layout.tsx` and registered as Tailwind theme tokens.
+
+| Token | Font | Use |
+|---|---|---|
+| `font-heading` | Hanken Grotesk | All headings (h1–h4, labels, nav) |
+| `font-body` | Fraunces | Body copy, descriptions, journal content |
+
+### Colours
+Defined in `app/globals.css` under `@theme inline`. Use these Tailwind tokens throughout — do not use hex values directly in components.
+
+| Token | Hex | Name |
+|---|---|---|
+| `plum` | `#40141F` | Deep dark burgundy — primary text, dark backgrounds |
+| `terra` | `#BF6836` | Terracotta — accents, CTAs |
+| `sand` | `#BF9663` | Warm tan — secondary accents, borders |
+| `gold` | `#BF964B` | Golden amber — highlights, badges |
+| `mist` | `#F0F0F2` | Off-white — page background, light surfaces |
+
+### Usage notes
+- Default page background: `bg-mist`
+- Default text: `text-plum`
+- Primary buttons / CTAs: `bg-terra` with `text-white`
+- Admin UI may continue to use Tailwind's neutral `stone-*` palette for form chrome — the brand colours apply to the public-facing site primarily
 
 ---
 
@@ -560,3 +588,6 @@ Rendered in the centre of Zone D pointing upward.
 On screens below 768px, do not render the SVG map.
 Render a card list of `plant_positions` grouped by zone name instead.
 Each card shows: plant name, zone badge, health status badge, last care action.
+
+### Image urls in seed-plants.ts
+These need to be found and added to supabase bucket? research each plant and decide to include it, you'd find a good reference photo, save it, upload it to your Supabase storage bucket, and paste the resulting URL into the image_url field via your admin panel.
