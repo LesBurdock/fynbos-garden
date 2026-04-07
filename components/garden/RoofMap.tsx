@@ -30,8 +30,10 @@ type Props = {
   positions: PlantPosition[];
   mode?: 'view' | 'add';
   selectedPositionId?: string | null;
+  selectedZoneId?: string | null;
   pendingDot?: { x: number; y: number } | null;
   onPositionClick?: (position: PlantPosition) => void;
+  onZoneClick?: (zone: Zone) => void;
   onMapClick?: (innerX: number, innerY: number) => void;
 };
 
@@ -40,8 +42,10 @@ export default function RoofMap({
   positions,
   mode = 'view',
   selectedPositionId,
+  selectedZoneId,
   pendingDot,
   onPositionClick,
+  onZoneClick,
   onMapClick,
 }: Props) {
   const svgRef = useRef<SVGSVGElement>(null);
@@ -98,16 +102,25 @@ export default function RoofMap({
         const { x, y, width, height } = zone.svg_coordinates;
         const cx = x + OFFSET + width / 2;
         const cy = y + OFFSET + height / 2;
+        const isSelectedZone = zone.id === selectedZoneId;
         return (
-          <g key={zone.id}>
+          <g
+            key={zone.id}
+            onClick={e => {
+              if (mode === 'add') return;
+              e.stopPropagation();
+              onZoneClick?.(zone);
+            }}
+            style={onZoneClick && mode !== 'add' ? { cursor: 'pointer' } : undefined}
+          >
             <rect
               x={x + OFFSET}
               y={y + OFFSET}
               width={width}
               height={height}
               fill={ZONE_COLORS[zone.name] ?? '#f0fdf4'}
-              stroke="#d6d3d1"
-              strokeWidth={1}
+              stroke={isSelectedZone ? '#40141F' : '#d6d3d1'}
+              strokeWidth={isSelectedZone ? 2 : 1}
             />
             <text
               x={cx}
@@ -177,6 +190,7 @@ export default function RoofMap({
               onPositionClick?.(pos);
             }}
             style={{ cursor: 'pointer' }}
+            aria-label={pos.plants ? `${pos.plants.name} - ${pos.health_status}` : undefined}
           >
             {isSelected && (
               <circle cx={cx} cy={cy} r={12} fill="white" stroke={color} strokeWidth={2} />
@@ -188,9 +202,6 @@ export default function RoofMap({
               stroke="white"
               strokeWidth={1.5}
             />
-            {pos.plants && (
-              <title>{pos.plants.name} — {pos.health_status}</title>
-            )}
           </g>
         );
       })}

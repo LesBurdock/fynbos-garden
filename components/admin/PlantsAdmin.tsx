@@ -8,10 +8,22 @@ type Props = {
   plants: Plant[];
 };
 
+type HoverImage = { src: string; top: number; left: number } | null;
+
 export default function PlantsAdmin({ plants }: Props) {
   const [selected, setSelected] = useState<Plant | null | 'new'>(null);
+  const [hoverImage, setHoverImage] = useState<HoverImage>(null);
 
   const panelOpen = selected !== null;
+
+  function handleThumbnailEnter(e: React.MouseEvent<HTMLImageElement>, src: string) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setHoverImage({ src, top: rect.top, left: rect.right + 12 });
+  }
+
+  function handleThumbnailLeave() {
+    setHoverImage(null);
+  }
 
   return (
     <div className="flex h-full">
@@ -31,6 +43,7 @@ export default function PlantsAdmin({ plants }: Props) {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-stone-200 bg-stone-50">
+                <th className="px-3 py-3 w-12"></th>
                 <th className="text-left px-6 py-3 text-xs font-medium text-stone-500 uppercase tracking-wide">Name</th>
                 <th className="text-left px-6 py-3 text-xs font-medium text-stone-500 uppercase tracking-wide">Latin name</th>
                 <th className="text-left px-6 py-3 text-xs font-medium text-stone-500 uppercase tracking-wide">Water</th>
@@ -48,6 +61,20 @@ export default function PlantsAdmin({ plants }: Props) {
                     selected !== 'new' && (selected as Plant)?.id === plant.id ? 'bg-green-50' : ''
                   }`}
                 >
+                  <td className="px-3 py-2">
+                    {plant.image_url ? (
+                      <img
+                        src={plant.image_url}
+                        alt={plant.name}
+                        className="w-9 h-9 rounded-md object-cover bg-stone-100"
+                        onMouseEnter={e => handleThumbnailEnter(e, plant.image_url)}
+                        onMouseLeave={handleThumbnailLeave}
+                        onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                      />
+                    ) : (
+                      <div className="w-9 h-9 rounded-md bg-stone-100" />
+                    )}
+                  </td>
                   <td className="px-6 py-3 font-medium text-stone-800">{plant.name}</td>
                   <td className="px-6 py-3 text-stone-500 italic">{plant.latin_name}</td>
                   <td className="px-6 py-3">
@@ -68,13 +95,27 @@ export default function PlantsAdmin({ plants }: Props) {
               ))}
               {plants.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="px-6 py-12 text-center text-stone-400">No plants yet — add one above.</td>
+                  <td colSpan={7} className="px-6 py-12 text-center text-stone-400">No plants yet — add one above.</td>
                 </tr>
               )}
             </tbody>
           </table>
         </div>
       </div>
+
+      {/* Hover image popup — fixed so it escapes overflow-auto */}
+      {hoverImage && (
+        <div
+          className="fixed z-50 pointer-events-none"
+          style={{ top: hoverImage.top, left: hoverImage.left }}
+        >
+          <img
+            src={hoverImage.src}
+            alt=""
+            className="w-48 h-48 rounded-xl object-cover shadow-2xl border border-stone-200"
+          />
+        </div>
+      )}
 
       {/* Side panel */}
       {panelOpen && (
