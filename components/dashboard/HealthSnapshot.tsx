@@ -10,8 +10,8 @@ export default function HealthSnapshot({ healthy, struggling, dead, strugglingLi
   const total = healthy + struggling + dead;
 
   return (
-    <div className="bg-white rounded-2xl border border-stone-200 p-6 flex flex-col gap-4">
-      <h2 className="font-heading text-lg font-bold text-stone-900">Plant health</h2>
+    <div className="bg-white rounded-2xl shadow-sm p-5 flex flex-col gap-4">
+      <h2 className="font-heading text-lg font-bold text-plum">Plant health</h2>
 
       <div className="grid grid-cols-3 gap-3">
         <CountBadge value={healthy} label="Healthy" colour="bg-green-100 text-green-800" />

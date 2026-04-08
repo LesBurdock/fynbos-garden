@@ -27,13 +27,16 @@ Update it as decisions change during the build.
 - [x] `/admin/log` — care log + watering log forms side by side (desktop) / tabbed (mobile); server actions in `app/admin/log/actions.ts`
 - [x] `/admin/tasks` — incomplete task list sorted by due date (overdue highlighted), mark done button, add task form; server actions in `app/admin/tasks/actions.ts`
 
-### In progress
-- [ ] `/admin/journal` — journal post management
+### Done (continued)
+- [x] `/admin/journal` — list, create, edit, delete with slug auto-generation
+- [x] `/garden` — public SVG map, PlantPanel + ZonePanel slide-in, mobile card list, zone click support
+- [x] `/dashboard` — all 5 widgets: attention panel, weather (with icons), health snapshot, bloom calendar, watering chart + activity feed
+- [x] Dashboard redesign — nav bar with logo, 3-col layout, HeroCircle with terra arc, ThisMonthBloom card
+- [x] Color system fixed — `@theme inline` split into `@theme inline` (fonts) + `@theme` (colors); brand tokens now work reliably
+- [x] Plant images — image_url support in PlantPanel hero, admin plants thumbnail with hover preview
+- [x] Bloom calendar — season name parsing (Spring/Summer/Autumn/Winter), correct Southern Hemisphere month mapping
 
 ### Up next (follow this order)
-- [ ] `/admin/journal` — journal post management
-- [ ] `/garden` — public SVG map with slide-in panel
-- [ ] `/dashboard` — widgets (weather, attention panel, health snapshot, bloom calendar, watering chart)
 - [ ] `/` — homepage
 - [ ] `/journal` — public journal list
 - [ ] Mobile responsive pass

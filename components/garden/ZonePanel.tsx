@@ -22,8 +22,8 @@ export default function ZonePanel({ zone, positions, onClose }: Props) {
       {/* Header */}
       <div className="flex items-start justify-between px-6 py-5 border-b border-stone-200 bg-white shrink-0">
         <div>
-          <h2 className="font-heading text-xl font-bold text-stone-900">{zone.name}</h2>
-          <p className="text-sm text-stone-500 mt-0.5">{zone.sun_exposure} · {zone.wind_exposure} wind</p>
+          <h2 className="font-heading text-xl font-bold text-plum">{zone.name}</h2>
+          <p className="text-sm text-sand mt-0.5">{zone.sun_exposure} · {zone.wind_exposure} wind</p>
         </div>
         <button
           onClick={onClose}

@@ -46,8 +46,8 @@ export default function PlantPanel({ position, lastCareLog, allPlants, onClose }
       {/* Header */}
       <div className="flex items-start justify-between px-6 py-5 border-b border-stone-200 bg-white shrink-0">
         <div>
-          <h2 className="font-heading text-xl font-bold text-stone-900 leading-tight">{plant.name}</h2>
-          <p className="text-sm italic text-stone-500 mt-0.5">{plant.latin_name}</p>
+          <h2 className="font-heading text-xl font-bold text-plum leading-tight">{plant.name}</h2>
+          <p className="text-sm italic text-sand mt-0.5">{plant.latin_name}</p>
         </div>
         <button
           onClick={onClose}

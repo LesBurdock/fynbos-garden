@@ -14,9 +14,9 @@ export default function AttentionPanel({ wateringDue, seasonalAlerts, upcomingTa
   const total = wateringDue.length + seasonalAlerts.length + upcomingTasks.length;
 
   return (
-    <div className="bg-white rounded-2xl border border-stone-200 p-6">
+    <div className="bg-white rounded-2xl shadow-sm p-6">
       <div className="flex items-center gap-3 mb-5">
-        <h2 className="font-heading text-lg font-bold text-stone-900">What needs attention</h2>
+        <h2 className="font-heading text-lg font-bold text-plum">What needs attention</h2>
         {total === 0 && (
           <span className="font-heading text-xs font-semibold px-2.5 py-1 rounded-full bg-green-100 text-green-700">All good</span>
         )}

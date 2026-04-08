@@ -1,21 +1,18 @@
 const MONTH_LABELS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
+// Southern Hemisphere season → start month, end month
+const SEASON_START: Record<string, number> = {
+  spring: 9, summer: 12, autumn: 3, winter: 6,
+};
+const SEASON_END: Record<string, number> = {
+  spring: 11, summer: 2, autumn: 5, winter: 8,
+};
 const MONTH_ABBRS: Record<string, number> = {
   Jan: 1, Feb: 2, Mar: 3, Apr: 4, May: 5, Jun: 6,
   Jul: 7, Aug: 8, Sep: 9, Oct: 10, Nov: 11, Dec: 12,
 };
 
-function bloomMonths(season: string | null): Set<number> {
-  if (!season) return new Set();
-  const lower = season.toLowerCase();
-  if (lower.includes('year') || lower.includes('all year')) {
-    return new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
-  }
-  const parts = season.split(/[–—\-]/);
-  if (parts.length !== 2) return new Set();
-  const start = MONTH_ABBRS[parts[0].trim()];
-  const end = MONTH_ABBRS[parts[1].trim()];
-  if (!start || !end) return new Set();
+function monthRange(start: number, end: number): Set<number> {
   const months = new Set<number>();
   if (start <= end) {
     for (let m = start; m <= end; m++) months.add(m);
@@ -24,6 +21,39 @@ function bloomMonths(season: string | null): Set<number> {
     for (let m = 1; m <= end; m++) months.add(m);
   }
   return months;
+}
+
+function bloomMonths(season: string | null): Set<number> {
+  if (!season) return new Set();
+  const lower = season.toLowerCase();
+  if (lower.includes('year') || lower.includes('all year')) {
+    return new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+  }
+
+  const parts = season.split(/[–—\-]/).map(p => p.trim());
+
+  // Single token — season or month
+  if (parts.length === 1) {
+    const s = SEASON_START[lower];
+    const e = SEASON_END[lower];
+    if (s && e) return monthRange(s, e);
+    const m = MONTH_ABBRS[parts[0]];
+    return m ? new Set([m]) : new Set();
+  }
+
+  const [rawStart, rawEnd] = parts;
+
+  // Season names
+  const ss = SEASON_START[rawStart.toLowerCase()];
+  const se = SEASON_END[rawEnd.toLowerCase()];
+  if (ss !== undefined && se !== undefined) return monthRange(ss, se);
+
+  // Month abbreviations
+  const ms = MONTH_ABBRS[rawStart];
+  const me = MONTH_ABBRS[rawEnd];
+  if (ms && me) return monthRange(ms, me);
+
+  return new Set();
 }
 
 type BloomPlant = { name: string; bloomSeason: string };
@@ -40,8 +70,8 @@ export default function BloomCalendar({ plants }: Props) {
     .filter(p => p.months.size > 0);
 
   return (
-    <div className="bg-white rounded-2xl border border-stone-200 p-6">
-      <h2 className="font-heading text-lg font-bold text-stone-900 mb-5">Bloom calendar</h2>
+    <div className="bg-white rounded-2xl shadow-sm p-6">
+      <h2 className="font-heading text-lg font-bold text-plum mb-5">Bloom calendar</h2>
 
       {/* Month header strip */}
       <div className="flex items-center gap-1 mb-4 pl-40">

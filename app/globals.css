@@ -1,10 +1,12 @@
 @import "tailwindcss";
 
 @theme inline {
-  /* Fonts */
+  /* Fonts — must use inline because values reference CSS variables */
   --font-heading: var(--font-hanken);
   --font-body: var(--font-fraunces);
+}
 
+@theme {
   /* Brand colours */
   --color-plum:  #40141F;
   --color-terra: #BF6836;

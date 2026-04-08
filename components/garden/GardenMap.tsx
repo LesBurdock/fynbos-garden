@@ -47,8 +47,8 @@ export default function GardenMap({ zones, positions, plants, careLogs }: Props)
       {/* Header */}
       <div className="shrink-0 px-6 py-4 border-b border-sand/20 bg-white flex items-center justify-between">
         <div>
-          <h1 className="font-heading text-lg font-bold text-stone-900">Fynbos Rooftop Garden</h1>
-          <p className="text-xs text-stone-500 mt-0.5 font-body">Cape Town · click a plant or zone to explore</p>
+          <h1 className="font-heading text-lg font-bold text-plum">Fynbos Rooftop Garden</h1>
+          <p className="text-xs text-sand mt-0.5 font-body">Cape Town · click a plant or zone to explore</p>
         </div>
         <div className="hidden md:flex items-center gap-3 text-xs font-heading font-medium text-plum/60">
           <LegendDot color="bg-green-500" label="Healthy" />

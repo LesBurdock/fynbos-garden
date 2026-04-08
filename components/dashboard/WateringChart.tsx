@@ -18,8 +18,8 @@ export default function WateringChart({ chartData, recentActivity }: Props) {
   const hasData = chartData.some(d => d.litres > 0);
 
   return (
-    <div className="bg-white rounded-2xl border border-stone-200 p-6">
-      <h2 className="font-heading text-lg font-bold text-stone-900 mb-5">Watering log</h2>
+    <div className="bg-white rounded-2xl shadow-sm p-6">
+      <h2 className="font-heading text-lg font-bold text-plum mb-5">Watering log</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Bar chart */}
