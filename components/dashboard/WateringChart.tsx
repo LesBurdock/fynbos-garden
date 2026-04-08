@@ -21,7 +21,7 @@ export default function WateringChart({ chartData, recentActivity }: Props) {
     <div className="bg-white rounded-2xl shadow-sm p-6">
       <h2 className="font-heading text-lg font-bold text-plum mb-5">Watering log</h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="flex flex-col gap-6">
         {/* Bar chart */}
         <div>
           <p className="font-heading text-xs text-stone-400 uppercase tracking-wide mb-3">Litres — last 7 days</p>

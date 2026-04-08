@@ -13,19 +13,23 @@ export default function HealthSnapshot({ healthy, struggling, dead, strugglingLi
     <div className="bg-white rounded-2xl shadow-sm p-5 flex flex-col gap-4">
       <h2 className="font-heading text-lg font-bold text-plum">Plant health</h2>
 
-      <div className="grid grid-cols-3 gap-3">
-        <CountBadge value={healthy} label="Healthy" colour="bg-green-100 text-green-800" />
-        <CountBadge value={struggling} label="Struggling" colour="bg-amber-100 text-amber-800" />
-        <CountBadge value={dead} label="Dead" colour="bg-red-100 text-red-800" />
-      </div>
+      <div className="flex gap-3">
+        {/* Vertical bar */}
+        {total > 0 && (
+          <div className="w-2 rounded-full bg-stone-100 overflow-hidden flex flex-col-reverse self-stretch">
+            {dead > 0 && <div className="bg-red-400 w-full rounded-full" style={{ height: `${(dead / total) * 100}%` }} />}
+            {struggling > 0 && <div className="bg-amber-400 w-full" style={{ height: `${(struggling / total) * 100}%` }} />}
+            {healthy > 0 && <div className="bg-green-400 w-full rounded-full" style={{ height: `${(healthy / total) * 100}%` }} />}
+          </div>
+        )}
 
-      {total > 0 && (
-        <div className="w-full h-2 rounded-full bg-stone-100 overflow-hidden flex">
-          {healthy > 0 && <div className="bg-green-400 h-full" style={{ width: `${(healthy / total) * 100}%` }} />}
-          {struggling > 0 && <div className="bg-amber-400 h-full" style={{ width: `${(struggling / total) * 100}%` }} />}
-          {dead > 0 && <div className="bg-red-400 h-full" style={{ width: `${(dead / total) * 100}%` }} />}
+        {/* Badges */}
+        <div className="flex flex-col gap-2 flex-1">
+          <CountBadge value={healthy} label="Healthy" colour="bg-green-100 text-green-800" />
+          <CountBadge value={struggling} label="Struggling" colour="bg-amber-100 text-amber-800" />
+          <CountBadge value={dead} label="Dead" colour="bg-red-100 text-red-800" />
         </div>
-      )}
+      </div>
 
       {(strugglingList.length > 0 || deadList.length > 0) && (
         <div className="space-y-2">
@@ -43,9 +47,9 @@ export default function HealthSnapshot({ healthy, struggling, dead, strugglingLi
 
 function CountBadge({ value, label, colour }: { value: number; label: string; colour: string }) {
   return (
-    <div className={`rounded-xl px-3 py-3 text-center ${colour}`}>
+    <div className={`rounded-xl px-4 py-3 flex items-center justify-between ${colour}`}>
+      <p className="font-heading text-sm font-medium">{label}</p>
       <p className="font-heading text-2xl font-bold">{value}</p>
-      <p className="font-heading text-xs font-medium mt-0.5">{label}</p>
     </div>
   );
 }

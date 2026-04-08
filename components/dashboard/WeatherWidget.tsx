@@ -15,7 +15,11 @@ export default function WeatherWidget({ weather }: Props) {
       ) : (
         <>
           <div className="grid grid-cols-2 gap-4">
-            <Stat label="Temperature" value={`${weather.temperature}°C`} />
+            <StatWithIcon
+              icon="/temp_icon.png"
+              label="Temperature"
+              value={`${weather.temperature}°C`}
+            />
             <StatWithIcon
               icon="/wind_icon.png"
               label="Wind"

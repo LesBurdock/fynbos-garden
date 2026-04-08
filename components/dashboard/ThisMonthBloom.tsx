@@ -20,7 +20,7 @@ export default function ThisMonthBloom({ plants, monthName }: Props) {
         <p className="text-sm text-stone-400 italic">No plants blooming this month.</p>
       ) : (
         <div className="space-y-3">
-          {plants.map(p => (
+          {plants.slice(0, 3).map(p => (
             <div key={p.name} className="flex items-center gap-3">
               {p.imageUrl ? (
                 <img

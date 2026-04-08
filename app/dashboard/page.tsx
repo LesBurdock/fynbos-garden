@@ -1,17 +1,16 @@
 import { createServerSupabaseClient } from '@/lib/supabase-server';
-import { Zone, PlantPosition, WateringLog, GardenTask, Plant, SeasonalTask } from '@/lib/types';
+import { Zone, PlantPosition, WateringLog, Plant } from '@/lib/types';
 import { fetchWeather } from '@/lib/weather';
 import DashboardNav from '@/components/dashboard/DashboardNav';
-import AttentionPanel from '@/components/dashboard/AttentionPanel';
 import WeatherWidget from '@/components/dashboard/WeatherWidget';
 import HealthSnapshot from '@/components/dashboard/HealthSnapshot';
 import BloomCalendar from '@/components/dashboard/BloomCalendar';
 import WateringChart from '@/components/dashboard/WateringChart';
 import HeroCircle from '@/components/dashboard/HeroCircle';
 import ThisMonthBloom from '@/components/dashboard/ThisMonthBloom';
+import WateringStatus, { ZoneWaterStatus } from '@/components/dashboard/WateringStatus';
 
 type PositionWithPlant = PlantPosition & { plants: Plant | null };
-type TaskWithZone = GardenTask & { zones: { name: string } | null };
 type RawCareLog = {
   id: string;
   logged_at: string;
@@ -47,11 +46,6 @@ function isBloomingThisMonth(bloomSeason: string | null, month: number): boolean
   return start <= end ? month >= start && month <= end : month >= start || month <= end;
 }
 
-function isInSeasonalWindow(task: SeasonalTask, month: number): boolean {
-  if (task.month_start <= task.month_end) return month >= task.month_start && month <= task.month_end;
-  return month >= task.month_start || month <= task.month_end;
-}
-
 function daysBetween(a: Date, b: Date) {
   return Math.floor((b.getTime() - a.getTime()) / (1000 * 60 * 60 * 24));
 }
@@ -63,33 +57,26 @@ export default async function DashboardPage() {
   const currentMonth = today.getMonth() + 1;
   const monthName = MONTH_NAMES[today.getMonth()];
 
-  const twoDaysFromNow = new Date(today);
-  twoDaysFromNow.setDate(today.getDate() + 2);
-  const twoDaysStr = twoDaysFromNow.toISOString().split('T')[0];
-
   const sevenDaysAgoStr = new Date(today.getTime() - 7 * 864e5).toISOString().split('T')[0];
 
   const [
     { data: zonesData },
     { data: positionsData },
     { data: wateringData },
-    { data: tasksData },
     { data: careData },
     weather,
   ] = await Promise.all([
     supabase.from('zones').select('*').order('name'),
     supabase.from('plant_positions').select('*, plants(*)').is('removed_at', null),
     supabase.from('watering_log').select('*').order('watered_at', { ascending: false }),
-    supabase.from('garden_tasks').select('*, zones(name)').is('completed_at', null).order('due_date'),
     supabase.from('care_log').select('id, logged_at, action, plant_positions(plants(name))').order('logged_at', { ascending: false }).limit(8),
     fetchWeather(),
   ]);
 
-  const zones      = (zonesData      ?? []) as Zone[];
-  const positions  = (positionsData  ?? []) as PositionWithPlant[];
-  const wateringLogs = (wateringData ?? []) as WateringLog[];
-  const tasks      = (tasksData      ?? []) as TaskWithZone[];
-  const careLogs   = (careData       ?? []) as unknown as RawCareLog[];
+  const zones        = (zonesData      ?? []) as Zone[];
+  const positions    = (positionsData  ?? []) as PositionWithPlant[];
+  const wateringLogs = (wateringData   ?? []) as WateringLog[];
+  const careLogs     = (careData       ?? []) as unknown as RawCareLog[];
 
   // Watering due
   const latestWatering = new Map<string, Date>();
@@ -98,29 +85,14 @@ export default async function DashboardPage() {
     const ex = latestWatering.get(log.zone_id);
     if (!ex || d > ex) latestWatering.set(log.zone_id, d);
   }
-  const wateringDue = zones
-    .map(zone => ({ zone, daysSince: latestWatering.has(zone.id) ? daysBetween(latestWatering.get(zone.id)!, today) : null }))
-    .filter(({ daysSince }) => daysSince === null || daysSince >= 5);
-
-  // Seasonal alerts
-  const seasonalAlerts: { plantName: string; task: string }[] = [];
-  const seenTasks = new Set<string>();
-  for (const pos of positions) {
-    const plant = pos.plants;
-    if (!plant?.seasonal_tasks) continue;
-    for (const t of plant.seasonal_tasks) {
-      if (!isInSeasonalWindow(t, currentMonth)) continue;
-      const key = `${plant.name}|${t.task}`;
-      if (seenTasks.has(key)) continue;
-      seenTasks.add(key);
-      seasonalAlerts.push({ plantName: plant.name, task: t.task });
-    }
-  }
-
-  // Upcoming tasks
-  const upcomingTasks = tasks
-    .filter(t => t.due_date <= twoDaysStr)
-    .map(t => ({ id: t.id, title: t.title, zoneName: t.zones?.name ?? null, due_date: t.due_date, task_type: t.task_type }));
+  const zoneStatuses: ZoneWaterStatus[] = zones.map(zone => {
+    const latestDate = latestWatering.get(zone.id) ?? null;
+    return {
+      zone,
+      daysSince: latestDate ? daysBetween(latestDate, today) : null,
+      lastWateredDate: latestDate ? latestDate.toISOString().split('T')[0] : null,
+    };
+  });
 
   // Health
   const healthy       = positions.filter(p => p.health_status === 'healthy').length;
@@ -171,39 +143,35 @@ export default async function DashboardPage() {
 
       <main className="max-w-5xl mx-auto px-6 pt-32 pb-12 space-y-5">
 
-        {/* Top row: hero+health | weather | attention */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {/* Hero circle */}
+        <HeroCircle imageUrl={heroImageUrl} />
 
-          {/* Left: hero circle + health */}
-          <div className="space-y-4">
-            <HeroCircle imageUrl={heroImageUrl} />
-            <HealthSnapshot
-              healthy={healthy}
-              struggling={struggling}
-              dead={dead}
-              strugglingList={strugglingList}
-              deadList={deadList}
-            />
-          </div>
-
-          {/* Centre: weather */}
-          <WeatherWidget weather={weather} />
-
-          {/* Right: attention */}
-          <AttentionPanel
-            wateringDue={wateringDue}
-            seasonalAlerts={seasonalAlerts}
-            upcomingTasks={upcomingTasks}
+        {/* Top row: 4 cards */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
+          <HealthSnapshot
+            healthy={healthy}
+            struggling={struggling}
+            dead={dead}
+            strugglingList={strugglingList}
+            deadList={deadList}
           />
+          <WeatherWidget weather={weather} />
+          <WateringChart chartData={chartData} recentActivity={recentActivity} />
+          <ThisMonthBloom plants={bloomingNow} monthName={monthName} />
         </div>
 
         {/* Bloom calendar */}
         <BloomCalendar plants={bloomPlants} />
 
-        {/* Bottom row: this month's bloom + watering chart */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <ThisMonthBloom plants={bloomingNow} monthName={monthName} />
-          <WateringChart chartData={chartData} recentActivity={recentActivity} />
+        {/* Bottom row: seasonal tasks (TBD) + watering status */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
+          {/* Placeholder — seasonal tasks not yet designed */}
+          <div className="bg-white rounded-2xl shadow-sm p-6 flex items-center justify-center min-h-40">
+            <p className="font-heading text-xs text-stone-300 text-center">Seasonal tasks<br />coming soon</p>
+          </div>
+          <div className="md:col-span-3">
+            <WateringStatus zones={zoneStatuses} />
+          </div>
         </div>
 
       </main>

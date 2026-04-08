@@ -3,7 +3,8 @@ import Image from 'next/image';
 
 export default function DashboardNav() {
   return (
-    <nav className="w-full px-8 py-5 flex items-center justify-between">
+    <nav className="w-full py-5">
+      <div className="max-w-5xl mx-auto px-6 flex items-center justify-between">
       <Link href="/">
         <Image src="/logo.png" alt="Fynbos Garden" width={48} height={48} className="object-contain" />
       </Link>
@@ -11,6 +12,7 @@ export default function DashboardNav() {
         <NavLink href="/garden">Roof layout</NavLink>
         <NavLink href="/journal">Journal</NavLink>
         <NavLink href="/admin/plants">Plant selection</NavLink>
+      </div>
       </div>
     </nav>
   );
