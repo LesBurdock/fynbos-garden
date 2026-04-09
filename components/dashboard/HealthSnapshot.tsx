@@ -6,60 +6,73 @@ type Props = {
   deadList: string[];
 };
 
-export default function HealthSnapshot({ healthy, struggling, dead, strugglingList, deadList }: Props) {
+export default function HealthSnapshot({ healthy, struggling, dead }: Props) {
   const total = healthy + struggling + dead;
+  const proportion = total > 0 ? healthy / total : 0;
+
+  const radius = 54;
+  const strokeWidth = 10;
+  const circumference = 2 * Math.PI * radius;
+  const dashOffset = circumference * (1 - proportion);
+  const size = (radius + strokeWidth) * 2 + 4;
+  const centre = size / 2;
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm p-5 flex flex-col gap-4">
-      <h2 className="font-heading text-lg font-bold text-plum">Plant health</h2>
+    <div className="bg-white rounded-2xl shadow-sm p-5 flex flex-col items-center justify-center gap-4">
+      <h2 className="font-heading text-lg font-bold text-plum self-start">Plant health</h2>
 
-      <div className="flex gap-3">
-        {/* Vertical bar */}
+      {/* Ring */}
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+        {/* Background ring */}
+        <circle
+          cx={centre} cy={centre} r={radius}
+          fill="none"
+          stroke="#e7e5e4"
+          strokeWidth={strokeWidth}
+        />
+        {/* Progress ring */}
         {total > 0 && (
-          <div className="w-2 rounded-full bg-stone-100 overflow-hidden flex flex-col-reverse self-stretch">
-            {dead > 0 && <div className="bg-red-400 w-full rounded-full" style={{ height: `${(dead / total) * 100}%` }} />}
-            {struggling > 0 && <div className="bg-amber-400 w-full" style={{ height: `${(struggling / total) * 100}%` }} />}
-            {healthy > 0 && <div className="bg-green-400 w-full rounded-full" style={{ height: `${(healthy / total) * 100}%` }} />}
-          </div>
+          <circle
+            cx={centre} cy={centre} r={radius}
+            fill="none"
+            stroke="#BF6836"
+            strokeWidth={strokeWidth}
+            strokeDasharray={circumference}
+            strokeDashoffset={dashOffset}
+            strokeLinecap="round"
+            transform={`rotate(-90 ${centre} ${centre})`}
+          />
         )}
+        {/* Centre count */}
+        <text
+          x={centre} y={centre - 6}
+          textAnchor="middle"
+          dominantBaseline="middle"
+          className="font-heading"
+          style={{ fontFamily: 'var(--font-heading)', fontSize: 28, fontWeight: 700, fill: '#40141F' }}
+        >
+          {total}
+        </text>
+        <text
+          x={centre} y={centre + 18}
+          textAnchor="middle"
+          dominantBaseline="middle"
+          style={{ fontFamily: 'var(--font-heading)', fontSize: 11, fill: '#a8a29e' }}
+        >
+          plants
+        </text>
+      </svg>
 
-        {/* Badges */}
-        <div className="flex flex-col gap-2 flex-1">
-          <CountBadge value={healthy} label="Healthy" colour="bg-green-100 text-green-800" />
-          <CountBadge value={struggling} label="Struggling" colour="bg-amber-100 text-amber-800" />
-          <CountBadge value={dead} label="Dead" colour="bg-red-100 text-red-800" />
-        </div>
+      {/* Status breakdown */}
+      <div className="text-center space-y-0.5">
+        <p className="font-heading text-xs text-stone-500">
+          <span className="text-green-700 font-semibold">{healthy}</span> healthy
+          {' · '}
+          <span className="text-amber-600 font-semibold">{struggling}</span> struggling
+          {' · '}
+          <span className="text-red-600 font-semibold">{dead}</span> dead
+        </p>
       </div>
-
-      {(strugglingList.length > 0 || deadList.length > 0) && (
-        <div className="space-y-2">
-          {strugglingList.map(name => (
-            <PlantRow key={name} name={name} status="struggling" />
-          ))}
-          {deadList.map(name => (
-            <PlantRow key={name} name={name} status="dead" />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
-function CountBadge({ value, label, colour }: { value: number; label: string; colour: string }) {
-  return (
-    <div className={`rounded-xl px-4 py-3 flex items-center justify-between ${colour}`}>
-      <p className="font-heading text-sm font-medium">{label}</p>
-      <p className="font-heading text-2xl font-bold">{value}</p>
-    </div>
-  );
-}
-
-function PlantRow({ name, status }: { name: string; status: 'struggling' | 'dead' }) {
-  const dot = status === 'dead' ? 'bg-red-400' : 'bg-amber-400';
-  return (
-    <div className="flex items-center gap-2">
-      <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${dot}`} />
-      <span className="text-sm text-stone-600 truncate">{name}</span>
     </div>
   );
 }

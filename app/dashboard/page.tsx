@@ -143,18 +143,9 @@ export default async function DashboardPage() {
 
       <main className="max-w-5xl mx-auto px-6 pt-32 pb-12 space-y-5">
 
-        {/* Hero circle */}
-        <HeroCircle imageUrl={heroImageUrl} />
-
         {/* Top row: 4 cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
-          <HealthSnapshot
-            healthy={healthy}
-            struggling={struggling}
-            dead={dead}
-            strugglingList={strugglingList}
-            deadList={deadList}
-          />
+          <HeroCircle imageUrl={heroImageUrl} />
           <WeatherWidget weather={weather} />
           <WateringChart chartData={chartData} recentActivity={recentActivity} />
           <ThisMonthBloom plants={bloomingNow} monthName={monthName} />
@@ -163,12 +154,15 @@ export default async function DashboardPage() {
         {/* Bloom calendar */}
         <BloomCalendar plants={bloomPlants} />
 
-        {/* Bottom row: seasonal tasks (TBD) + watering status */}
+        {/* Bottom row: health + watering status */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
-          {/* Placeholder — seasonal tasks not yet designed */}
-          <div className="bg-white rounded-2xl shadow-sm p-6 flex items-center justify-center min-h-40">
-            <p className="font-heading text-xs text-stone-300 text-center">Seasonal tasks<br />coming soon</p>
-          </div>
+          <HealthSnapshot
+            healthy={healthy}
+            struggling={struggling}
+            dead={dead}
+            strugglingList={strugglingList}
+            deadList={deadList}
+          />
           <div className="md:col-span-3">
             <WateringStatus zones={zoneStatuses} />
           </div>

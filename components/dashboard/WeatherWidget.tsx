@@ -14,7 +14,7 @@ export default function WeatherWidget({ weather }: Props) {
         <p className="text-sm text-stone-400">Weather unavailable.</p>
       ) : (
         <>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="flex flex-col gap-3">
             <StatWithIcon
               icon="/temp_icon.png"
               label="Temperature"

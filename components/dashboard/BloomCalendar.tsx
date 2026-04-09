@@ -73,59 +73,75 @@ export default function BloomCalendar({ plants }: Props) {
     <div className="bg-white rounded-2xl shadow-sm p-6">
       <h2 className="font-heading text-lg font-bold text-plum mb-5">Bloom calendar</h2>
 
-      {/* Month header strip */}
-      <div className="flex items-center gap-1 mb-4 pl-40">
-        {MONTH_LABELS.map((label, i) => {
-          const month = i + 1;
-          return (
-            <div
-              key={label}
-              className={`flex-1 text-center font-heading text-xs font-semibold rounded-md py-1 ${
-                month === currentMonth
-                  ? 'bg-terra text-white'
-                  : 'text-stone-400'
-              }`}
-            >
-              {label}
-            </div>
-          );
-        })}
+      {/* Mobile: simple list */}
+      <div className="md:hidden">
+        {withMonths.length === 0 ? (
+          <p className="text-sm text-stone-400">No bloom data available.</p>
+        ) : (
+          <div className="space-y-2">
+            {withMonths.map(plant => {
+              const bloomingNow = plant.months.has(currentMonth);
+              return (
+                <div key={plant.name} className="flex items-center justify-between py-2 border-b border-stone-100 last:border-0">
+                  <span className="text-sm font-medium text-stone-700">{plant.name}</span>
+                  <div className="flex items-center gap-2">
+                    {bloomingNow && (
+                      <span className="font-heading text-xs font-semibold px-2 py-0.5 rounded-full bg-terra text-white">Now</span>
+                    )}
+                    <span className="text-xs text-stone-400">{plant.bloomSeason}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
 
-      {withMonths.length === 0 ? (
-        <p className="text-sm text-stone-400">No bloom data available.</p>
-      ) : (
-        <div className="space-y-2">
-          {withMonths.map(plant => (
-            <div key={plant.name} className="flex items-center gap-1">
-              <span className="w-40 shrink-0 text-xs font-medium text-stone-700 truncate pr-2">{plant.name}</span>
-              {MONTH_LABELS.map((_, i) => {
-                const month = i + 1;
-                const blooms = plant.months.has(month);
-                const isCurrent = month === currentMonth;
-                return (
-                  <div key={month} className="flex-1 flex justify-center">
-                    <span
-                      className={`w-3 h-3 rounded-full ${
-                        blooms
-                          ? isCurrent
-                            ? 'bg-terra'
-                            : 'bg-gold'
-                          : 'bg-stone-100'
-                      }`}
-                    />
-                  </div>
-                );
-              })}
-            </div>
-          ))}
+      {/* Desktop: full dot grid */}
+      <div className="hidden md:block">
+        <div className="flex items-center gap-1 mb-4 pl-40">
+          {MONTH_LABELS.map((label, i) => {
+            const month = i + 1;
+            return (
+              <div
+                key={label}
+                className={`flex-1 text-center font-heading text-xs font-semibold rounded-md py-1 ${
+                  month === currentMonth ? 'bg-terra text-white' : 'text-stone-400'
+                }`}
+              >
+                {label}
+              </div>
+            );
+          })}
         </div>
-      )}
 
-      <p className="mt-4 text-xs text-stone-400 font-heading">
-        <span className="inline-block w-2 h-2 rounded-full bg-terra mr-1 align-middle" />current month &nbsp;
-        <span className="inline-block w-2 h-2 rounded-full bg-gold mr-1 align-middle" />blooming
-      </p>
+        {withMonths.length === 0 ? (
+          <p className="text-sm text-stone-400">No bloom data available.</p>
+        ) : (
+          <div className="space-y-2">
+            {withMonths.map(plant => (
+              <div key={plant.name} className="flex items-center gap-1">
+                <span className="w-40 shrink-0 text-xs font-medium text-stone-700 truncate pr-2">{plant.name}</span>
+                {MONTH_LABELS.map((_, i) => {
+                  const month = i + 1;
+                  const blooms = plant.months.has(month);
+                  const isCurrent = month === currentMonth;
+                  return (
+                    <div key={month} className="flex-1 flex justify-center">
+                      <span className={`w-3 h-3 rounded-full ${blooms ? isCurrent ? 'bg-terra' : 'bg-gold' : 'bg-stone-100'}`} />
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+        )}
+
+        <p className="mt-4 text-xs text-stone-400 font-heading">
+          <span className="inline-block w-2 h-2 rounded-full bg-terra mr-1 align-middle" />current month &nbsp;
+          <span className="inline-block w-2 h-2 rounded-full bg-gold mr-1 align-middle" />blooming
+        </p>
+      </div>
     </div>
   );
 }
