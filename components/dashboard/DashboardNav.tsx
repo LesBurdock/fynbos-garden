@@ -1,27 +1,18 @@
 import Link from 'next/link';
-import Image from 'next/image';
 
 export default function DashboardNav() {
   return (
-    <nav className="w-full py-5">
-      <div className="max-w-5xl mx-auto px-6 flex items-center justify-between">
-      <Link href="/">
-        <Image src="/logo.png" alt="Fynbos Garden" width={48} height={48} className="object-contain" />
-      </Link>
-      <div className="flex items-center gap-8">
-        <NavLink href="/garden">Roof layout</NavLink>
-        <NavLink href="/journal">Journal</NavLink>
-        <NavLink href="/admin/plants">Plant selection</NavLink>
-      </div>
+    <nav className="absolute top-0 left-0 right-0 z-20 py-8">
+      <div className="max-w-7xl px-16 flex items-center justify-between">
+        <span className="font-heading text-base font-semibold tracking-widest uppercase text-plum/80">
+          Fynbos Garden
+        </span>
+        <div className="flex gap-6 font-heading text-base font-medium text-plum/70">
+          <Link href="/" className="hover:text-plum transition-colors">Home</Link>
+          <Link href="/garden" className="hover:text-plum transition-colors">Map</Link>
+          <Link href="/journal" className="hover:text-plum transition-colors">Journal</Link>
+        </div>
       </div>
     </nav>
-  );
-}
-
-function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
-  return (
-    <Link href={href} className="font-heading text-sm text-stone-600 hover:text-plum transition-colors">
-      {children}
-    </Link>
   );
 }

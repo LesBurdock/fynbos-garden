@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { Zone, PlantPosition, Plant, CareLog } from '@/lib/types';
 import RoofMap from '@/components/garden/RoofMap';
 import PlantPanel from '@/components/garden/PlantPanel';
@@ -26,6 +27,10 @@ function latestCareLog(positionId: string, careLogs: CareLog[]): CareLog | null 
 export default function GardenMap({ zones, positions, plants, careLogs }: Props) {
   const [panel, setPanel] = useState<PanelState>(null);
 
+  const healthy    = positions.filter(p => p.health_status === 'healthy').length;
+  const struggling = positions.filter(p => p.health_status === 'struggling').length;
+  const dead       = positions.filter(p => p.health_status === 'dead').length;
+
   function handlePositionClick(position: PlantPosition) {
     setPanel({ type: 'plant', position });
   }
@@ -48,13 +53,22 @@ export default function GardenMap({ zones, positions, plants, careLogs }: Props)
       <div className="shrink-0 px-6 py-4 border-b border-sand/20 bg-white flex items-center justify-between">
         <div>
           <h1 className="font-heading text-lg font-bold text-plum">Fynbos Rooftop Garden</h1>
-          <p className="text-xs text-sand mt-0.5 font-body">Cape Town · click a plant or zone to explore</p>
+          <p className="text-sm md:text-base text-sand mt-0.5 font-body">Cape Town · click a plant or zone to explore</p>
         </div>
-        <div className="hidden md:flex items-center gap-3 text-xs font-heading font-medium text-plum/60">
-          <LegendDot color="bg-green-500" label="Healthy" />
-          <LegendDot color="bg-amber-500" label="Struggling" />
-          <LegendDot color="bg-red-500" label="Dead" />
+        <div className="hidden md:flex items-center gap-6">
+            <div className="flex items-center gap-4 font-heading text-sm text-plum/60">
+            <Link href="/" className="hover:text-plum transition-colors">Home</Link>
+            <Link href="/dashboard" className="hover:text-plum transition-colors">Dashboard</Link>
+            <Link href="/journal" className="hover:text-plum transition-colors">Journal</Link>
+          </div>
         </div>
+      </div>
+
+      {/* Health status bar */}
+      <div className="hidden md:flex items-center gap-6 px-6 py-3 border-b border-sand/20 bg-white">
+        <LegendDot color="bg-green-500" label={`${healthy} Healthy`} />
+        <LegendDot color="bg-amber-500" label={`${struggling} Struggling`} />
+        <LegendDot color="bg-red-500" label={`${dead} Dead`} />
       </div>
 
       {/* Desktop map */}
@@ -114,7 +128,7 @@ export default function GardenMap({ zones, positions, plants, careLogs }: Props)
 
 function LegendDot({ color, label }: { color: string; label: string }) {
   return (
-    <span className="flex items-center gap-1.5">
+    <span className="flex items-center gap-1.5 font-heading text-sm text-plum/60">
       <span className={`inline-block w-2 h-2 rounded-full ${color}`} />
       {label}
     </span>

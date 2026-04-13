@@ -70,7 +70,7 @@ export default function PlantPanel({ position, lastCareLog, allPlants, onClose }
 
         {/* Last care log */}
         <div className="bg-white rounded-xl p-4 border border-stone-200">
-          <p className="font-heading text-xs font-semibold text-stone-400 uppercase tracking-wide mb-2">Last care</p>
+          <p className="font-heading text-xs md:text-sm font-semibold text-stone-400 uppercase tracking-wide mb-2">Last care</p>
           {lastCareLog ? (
             <>
               <p className="text-sm font-semibold text-stone-800">{lastCareLog.action}</p>
@@ -86,7 +86,7 @@ export default function PlantPanel({ position, lastCareLog, allPlants, onClose }
 
         {/* Plant characteristics */}
         <div className="bg-white rounded-xl p-4 border border-stone-200">
-          <p className="font-heading text-xs font-semibold text-stone-400 uppercase tracking-wide mb-3">Characteristics</p>
+          <p className="font-heading text-xs md:text-sm font-semibold text-stone-400 uppercase tracking-wide mb-3">Characteristics</p>
           <div className="space-y-2">
             <Row label="Water needs" value={plant.water_needs} />
             <Row label="Sun" value={plant.sun_tolerance} />
@@ -99,7 +99,7 @@ export default function PlantPanel({ position, lastCareLog, allPlants, onClose }
         {/* Description */}
         {plant.description && (
           <div className="bg-white rounded-xl p-4 border border-stone-200">
-            <p className="font-heading text-xs font-semibold text-stone-400 uppercase tracking-wide mb-2">About</p>
+            <p className="font-heading text-xs md:text-sm font-semibold text-stone-400 uppercase tracking-wide mb-2">About</p>
             <p className="text-sm text-stone-700 leading-relaxed font-body">{plant.description}</p>
           </div>
         )}
@@ -121,7 +121,7 @@ export default function PlantPanel({ position, lastCareLog, allPlants, onClose }
 
             {showReplacements && (
               <div className="mt-3 space-y-2">
-                <p className="font-heading text-xs font-semibold text-stone-400 uppercase tracking-wide px-1">
+                <p className="font-heading text-xs md:text-sm font-semibold text-stone-400 uppercase tracking-wide px-1">
                   Suited to {zone.sun_exposure} · {zone.wind_exposure} wind
                 </p>
                 {replacements.length === 0 ? (
@@ -166,7 +166,7 @@ function ImageHero({ src, alt }: { src: string; alt: string }) {
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-baseline justify-between gap-2">
-      <span className="font-heading text-xs text-stone-400 shrink-0">{label}</span>
+      <span className="font-heading text-xs md:text-sm text-stone-400 shrink-0">{label}</span>
       <span className="text-sm font-medium text-stone-800 text-right">{value}</span>
     </div>
   );

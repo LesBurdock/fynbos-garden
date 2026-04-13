@@ -24,7 +24,7 @@ export default function WateringChart({ chartData, recentActivity }: Props) {
       <div className="flex flex-col gap-6">
         {/* Bar chart */}
         <div>
-          <p className="font-heading text-xs text-stone-400 uppercase tracking-wide mb-3">Litres — last 7 days</p>
+          <p className="font-heading text-xs md:text-sm text-stone-400 uppercase tracking-wide mb-3">Litres — last 7 days</p>
           {!hasData ? (
             <p className="text-sm text-stone-400 italic">No watering logged in the last 7 days.</p>
           ) : (
@@ -48,7 +48,7 @@ export default function WateringChart({ chartData, recentActivity }: Props) {
 
         {/* Activity feed */}
         <div>
-          <p className="font-heading text-xs text-stone-400 uppercase tracking-wide mb-3">Recent care activity</p>
+          <p className="font-heading text-xs md:text-sm text-stone-400 uppercase tracking-wide mb-3">Recent care activity</p>
           {recentActivity.length === 0 ? (
             <p className="text-sm text-stone-400 italic">No care logged yet.</p>
           ) : (

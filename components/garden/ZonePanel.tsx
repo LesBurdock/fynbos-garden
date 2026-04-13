@@ -36,7 +36,7 @@ export default function ZonePanel({ zone, positions, onClose }: Props) {
       <div className="flex-1 overflow-y-auto px-5 py-5 space-y-4">
         {/* Zone specs */}
         <div className="bg-white rounded-xl p-4 border border-stone-200">
-          <p className="font-heading text-xs font-semibold text-stone-400 uppercase tracking-wide mb-3">Setup</p>
+          <p className="font-heading text-xs md:text-sm font-semibold text-stone-400 uppercase tracking-wide mb-3">Setup</p>
           <div className="space-y-2">
             {zone.container_type && <Row label="Container" value={zone.container_type} />}
             {zone.substrate_type && <Row label="Substrate" value={zone.substrate_type} />}
@@ -48,7 +48,7 @@ export default function ZonePanel({ zone, positions, onClose }: Props) {
 
         {/* Current plants */}
         <div className="bg-white rounded-xl p-4 border border-stone-200">
-          <p className="font-heading text-xs font-semibold text-stone-400 uppercase tracking-wide mb-3">
+          <p className="font-heading text-xs md:text-sm font-semibold text-stone-400 uppercase tracking-wide mb-3">
             Current plants ({zonePlants.length})
           </p>
           {zonePlants.length === 0 ? (
@@ -75,7 +75,7 @@ export default function ZonePanel({ zone, positions, onClose }: Props) {
         {/* Notes */}
         {zone.notes && (
           <div className="bg-white rounded-xl p-4 border border-stone-200">
-            <p className="font-heading text-xs font-semibold text-stone-400 uppercase tracking-wide mb-2">Notes</p>
+            <p className="font-heading text-xs md:text-sm font-semibold text-stone-400 uppercase tracking-wide mb-2">Notes</p>
             <p className="text-sm text-stone-700 font-body leading-relaxed">{zone.notes}</p>
           </div>
         )}

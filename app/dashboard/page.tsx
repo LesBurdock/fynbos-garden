@@ -141,21 +141,13 @@ export default async function DashboardPage() {
     <div className="min-h-screen bg-mist">
       <DashboardNav />
 
-      <main className="max-w-5xl mx-auto px-6 pt-32 pb-12 space-y-5">
+      <main className="max-w-5xl mx-auto px-6 pt-48 pb-12 space-y-5">
 
         {/* Top row: 4 cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
           <HeroCircle imageUrl={heroImageUrl} />
           <WeatherWidget weather={weather} />
           <WateringChart chartData={chartData} recentActivity={recentActivity} />
-          <ThisMonthBloom plants={bloomingNow} monthName={monthName} />
-        </div>
-
-        {/* Bloom calendar */}
-        <BloomCalendar plants={bloomPlants} />
-
-        {/* Bottom row: health + watering status */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
           <HealthSnapshot
             healthy={healthy}
             struggling={struggling}
@@ -163,6 +155,14 @@ export default async function DashboardPage() {
             strugglingList={strugglingList}
             deadList={deadList}
           />
+        </div>
+
+        {/* Bloom calendar */}
+        <BloomCalendar plants={bloomPlants} />
+
+        {/* Bottom row: this month bloom + watering status */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
+          <ThisMonthBloom plants={bloomingNow} monthName={monthName} />
           <div className="md:col-span-3">
             <WateringStatus zones={zoneStatuses} />
           </div>

@@ -18,7 +18,7 @@ export default function HealthSnapshot({ healthy, struggling, dead }: Props) {
   const centre = size / 2;
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm p-5 flex flex-col items-center justify-center gap-4">
+    <div className="bg-white rounded-2xl shadow-sm p-5 flex flex-col items-center justify-start gap-4">
       <h2 className="font-heading text-lg font-bold text-plum self-start">Plant health</h2>
 
       {/* Ring */}

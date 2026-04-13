@@ -6,6 +6,12 @@
   --font-body: var(--font-fraunces);
 }
 
+@layer base {
+  .font-heading {
+    letter-spacing: -0.04em;
+  }
+}
+
 @theme {
   /* Brand colours */
   --color-plum:  #40141F;

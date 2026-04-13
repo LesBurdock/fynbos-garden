@@ -49,7 +49,7 @@ export default function WeatherWidget({ weather }: Props) {
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="font-heading text-xs text-stone-400 uppercase tracking-wide mb-0.5">{label}</p>
+      <p className="font-heading text-xs md:text-sm text-stone-400 uppercase tracking-wide mb-0.5">{label}</p>
       <p className="text-sm font-semibold text-stone-800">{value}</p>
     </div>
   );
@@ -60,7 +60,7 @@ function StatWithIcon({ icon, label, value }: { icon: string; label: string; val
     <div className="flex items-start gap-2">
       <Image src={icon} alt={label} width={18} height={18} className="mt-0.5 opacity-70" />
       <div>
-        <p className="font-heading text-xs text-stone-400 uppercase tracking-wide mb-0.5">{label}</p>
+        <p className="font-heading text-xs md:text-sm text-stone-400 uppercase tracking-wide mb-0.5">{label}</p>
         <p className="text-sm font-semibold text-stone-800">{value}</p>
       </div>
     </div>
