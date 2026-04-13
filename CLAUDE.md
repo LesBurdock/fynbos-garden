@@ -35,9 +35,13 @@ Update it as decisions change during the build.
 - [x] Color system fixed — `@theme inline` split into `@theme inline` (fonts) + `@theme` (colors); brand tokens now work reliably
 - [x] Plant images — image_url support in PlantPanel hero, admin plants thumbnail with hover preview
 - [x] Bloom calendar — season name parsing (Spring/Summer/Autumn/Winter), correct Southern Hemisphere month mapping
+- [x] `/` — homepage: hero with circle image (right side, cropped by stat strip), mist background, plum stat overlay, explore nav cards with overlaid text, journal posts, tech stack footer
+- [x] Typography — Hanken Grotesk weight 400 only, `-0.04em` letter-spacing globally via `@layer base`; Fraunces weight 300 (light) for body; `text-xs` → `text-xs md:text-sm` for all heading labels on desktop
+- [x] `/garden` map polish — botanical SVG icon (`file.svg`) as plant position dots with health-status colour (green/amber/red); white zone fills; windsock wind indicator with `wind_icon.png`; seating areas (top-right, bottom-left); stairs dashed rectangle; larger invisible hit targets; health status bar above map; nav links in header
+- [x] Dashboard polish — DashboardNav updated to match site-wide style; HealthSnapshot and ThisMonthBloom positions swapped; HealthSnapshot top-aligned; `pt-48` content offset for nav clearance
+- [x] Site-wide nav — consistent style across `/`, `/garden`, `/dashboard`: Hanken Grotesk base, `max-w-7xl px-16`, plum/70 links
 
 ### Up next (follow this order)
-- [ ] `/` — homepage
 - [ ] `/journal` — public journal list
 - [ ] Mobile responsive pass
 - [ ] Polish: loading states, error states, OG tags, Lighthouse audit
