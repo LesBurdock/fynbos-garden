@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { Zone, PlantPosition, Plant, CareLog } from '@/lib/types';
 import RoofMap from '@/components/garden/RoofMap';
@@ -26,6 +27,7 @@ function latestCareLog(positionId: string, careLogs: CareLog[]): CareLog | null 
 
 export default function GardenMap({ zones, positions, plants, careLogs }: Props) {
   const [panel, setPanel] = useState<PanelState>(null);
+  const [navOpen, setNavOpen] = useState(false);
 
   const healthy    = positions.filter(p => p.health_status === 'healthy').length;
   const struggling = positions.filter(p => p.health_status === 'struggling').length;
@@ -50,18 +52,36 @@ export default function GardenMap({ zones, positions, plants, careLogs }: Props)
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="shrink-0 px-6 py-4 border-b border-sand/20 bg-white flex items-center justify-between">
-        <div>
-          <h1 className="font-heading text-lg font-bold text-plum">Fynbos Rooftop Garden</h1>
-          <p className="text-sm md:text-base text-sand mt-0.5 font-body">Cape Town · click a plant or zone to explore</p>
-        </div>
-        <div className="hidden md:flex items-center gap-6">
-            <div className="flex items-center gap-4 font-heading text-sm text-plum/60">
+      <div className="shrink-0 border-b border-sand/20 bg-white">
+        <div className="px-6 py-4 flex items-center justify-between">
+          <div>
+            <h1 className="font-heading text-lg font-bold text-plum">Fynbos Rooftop Garden</h1>
+            <p className="text-sm md:text-base text-sand mt-0.5 font-body">Cape Town · click a plant or zone to explore</p>
+          </div>
+          {/* Desktop links */}
+          <div className="hidden md:flex items-center gap-4 font-heading text-sm text-plum/60">
             <Link href="/" className="hover:text-plum transition-colors">Home</Link>
             <Link href="/dashboard" className="hover:text-plum transition-colors">Dashboard</Link>
             <Link href="/journal" className="hover:text-plum transition-colors">Journal</Link>
           </div>
+          {/* Mobile hamburger */}
+          <button
+            className="md:hidden p-2 -mr-2"
+            onClick={() => setNavOpen(prev => !prev)}
+            aria-label="Toggle navigation menu"
+            aria-expanded={navOpen}
+          >
+            <Image src="/hamburger-menu-svgrepo-com.svg" alt="Menu" width={22} height={22} />
+          </button>
         </div>
+        {/* Mobile dropdown */}
+        {navOpen && (
+          <div className="md:hidden border-t border-sand/20 px-6 py-4 flex flex-col gap-4">
+            <Link href="/" className="font-heading text-sm font-medium text-plum/70 hover:text-plum transition-colors" onClick={() => setNavOpen(false)}>Home</Link>
+            <Link href="/dashboard" className="font-heading text-sm font-medium text-plum/70 hover:text-plum transition-colors" onClick={() => setNavOpen(false)}>Dashboard</Link>
+            <Link href="/journal" className="font-heading text-sm font-medium text-plum/70 hover:text-plum transition-colors" onClick={() => setNavOpen(false)}>Journal</Link>
+          </div>
+        )}
       </div>
 
       {/* Health status bar */}

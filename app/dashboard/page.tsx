@@ -1,7 +1,7 @@
 import { createServerSupabaseClient } from '@/lib/supabase-server';
 import { Zone, PlantPosition, WateringLog, Plant } from '@/lib/types';
 import { fetchWeather } from '@/lib/weather';
-import DashboardNav from '@/components/dashboard/DashboardNav';
+import SiteNav from '@/components/ui/SiteNav';
 import WeatherWidget from '@/components/dashboard/WeatherWidget';
 import HealthSnapshot from '@/components/dashboard/HealthSnapshot';
 import BloomCalendar from '@/components/dashboard/BloomCalendar';
@@ -139,7 +139,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-mist">
-      <DashboardNav />
+      <SiteNav />
 
       <main className="max-w-5xl mx-auto px-6 pt-48 pb-12 space-y-5">
 

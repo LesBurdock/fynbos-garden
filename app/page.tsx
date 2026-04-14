@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import SiteNav from '@/components/ui/SiteNav';
 import { createServerSupabaseClient } from '@/lib/supabase-server';
 import { fetchWeather } from '@/lib/weather';
 import { PlantPosition, Plant, JournalPost, GardenTask } from '@/lib/types';
@@ -75,24 +76,16 @@ export default async function HomePage() {
     <div className="min-h-screen bg-mist text-plum">
 
       {/* ── Nav ── */}
-      <nav className="absolute top-0 left-0 right-0 z-20 py-8">
-        <div className="max-w-7xl px-16 flex items-center justify-between">
-          <span className="font-heading text-base font-semibold tracking-widest uppercase text-plum/80">
-            Fynbos Garden
-          </span>
-          <div className="flex gap-6 font-heading text-base font-medium text-plum/70">
-            <Link href="/garden" className="hover:text-plum transition-colors">Map</Link>
-            <Link href="/dashboard" className="hover:text-plum transition-colors">Dashboard</Link>
-            <Link href="/journal" className="hover:text-plum transition-colors">Journal</Link>
-          </div>
-        </div>
-      </nav>
+      <SiteNav />
 
       {/* ── Hero ── */}
-      <section className="relative h-[85vh] min-h-[560px] bg-mist overflow-hidden">
+      <section className="relative min-h-[800px] md:h-screen md:min-h-[640px] bg-mist overflow-hidden">
 
-        {/* Circle image — right side */}
-        <div className="absolute right-16 top-20 bottom-0 aspect-square rounded-full overflow-hidden">
+        {/* Circle image — bottom right, clipped by stat strip */}
+        {/* Mobile: smaller, shifted right to sit behind text. Desktop: full height pinned to bottom */}
+        <div className="absolute rounded-full overflow-hidden
+          right-0 bottom-[10%] h-[62vh] aspect-square
+          md:right-16 md:bottom-0 md:h-[75vh] md:top-auto">
           <Image
             src="/large_hero_circle.jpeg"
             alt="Fynbos rooftop garden in Cape Town"
@@ -100,47 +93,50 @@ export default async function HomePage() {
             className="object-cover"
             priority
           />
+          <div className="absolute inset-0 bg-plum/40 md:hidden" />
         </div>
 
-        {/* Text — bottom left */}
-        <div className="absolute bottom-0 left-0 z-10 px-20 pb-36 max-w-2xl">
-          <p className="font-body text-plum/60 text-sm tracking-widest uppercase mb-3">
-            Cape Town · Rooftop · Native Fynbos
-          </p>
-          <h1 className="font-heading text-5xl md:text-6xl text-plum leading-tight mb-4">
-            A garden in the sky.
-          </h1>
-          <p className="font-body text-plum/70 text-xl md:text-2xl italic leading-relaxed mb-10">
-            Thirty-one species of South African fynbos, planted above the city and watched closely.
-          </p>
+        {/* Text — vertically centred; centered on mobile, left-aligned on desktop */}
+        <div className="absolute top-24 md:top-0 bottom-28 md:bottom-0 left-0 right-0 md:right-auto flex items-center justify-center md:justify-start z-10 px-8 md:px-20 md:max-w-2xl">
+          <div className="text-center md:text-left w-full pt-20 md:pt-0">
+            <p className="font-body text-plum/60 text-sm tracking-widest uppercase mb-3">
+              Cape Town · Rooftop · Native Fynbos
+            </p>
+            <h1 className="font-heading text-5xl md:text-6xl text-plum leading-tight mb-32 md:mb-4">
+              A garden in the sky.
+            </h1>
+            <p className="font-body text-white/80 md:text-plum/70 text-xl md:text-2xl italic leading-relaxed mb-10">
+              Thirty-five species of South African fynbos, planted above the city and watched closely.
+            </p>
 
-          {/* Health counts */}
-          <div className="flex flex-wrap gap-3">
-            <span className="inline-flex items-center gap-2 bg-plum/10 border border-plum/20 text-plum text-sm font-heading font-medium px-4 py-2 rounded-full">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block" />
-              {healthy} healthy
-            </span>
-            <span className="inline-flex items-center gap-2 bg-plum/10 border border-plum/20 text-plum text-sm font-heading font-medium px-4 py-2 rounded-full">
-              <span className="w-2 h-2 rounded-full bg-amber-500 inline-block" />
-              {struggling} struggling
-            </span>
-            <span className="inline-flex items-center gap-2 bg-plum/10 border border-plum/20 text-plum text-sm font-heading font-medium px-4 py-2 rounded-full">
-              <span className="w-2 h-2 rounded-full bg-red-500 inline-block" />
-              {dead} dead
-            </span>
+            {/* Health counts */}
+            <div className="flex flex-wrap gap-3 justify-center md:justify-start">
+              <span className="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-white md:bg-plum/10 md:border-plum/20 md:text-plum text-sm font-heading font-medium px-4 py-2 rounded-full">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block" />
+                {healthy} healthy
+              </span>
+              <span className="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-white md:bg-plum/10 md:border-plum/20 md:text-plum text-sm font-heading font-medium px-4 py-2 rounded-full">
+                <span className="w-2 h-2 rounded-full bg-amber-500 inline-block" />
+                {struggling} struggling
+              </span>
+              <span className="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-white md:bg-plum/10 md:border-plum/20 md:text-plum text-sm font-heading font-medium px-4 py-2 rounded-full">
+                <span className="w-2 h-2 rounded-full bg-red-500 inline-block" />
+                {dead} dead
+              </span>
+            </div>
           </div>
         </div>
 
         {/* Stat strip — overlays bottom of image */}
-        <div className="absolute bottom-0 left-0 right-0 z-20 bg-mist">
+        <div className="absolute bottom-6 md:bottom-0 left-0 right-0 z-20 bg-mist">
           <div className="w-[90%] mx-auto border-t-2 border-sand/40" />
-          <div className="max-w-6xl mx-auto px-16 py-6 grid grid-cols-3 divide-x divide-sand/20">
-            <div className="pr-8">
-              <p className="font-heading text-xs md:text-sm uppercase tracking-widest text-sand mb-1">Today</p>
+          <div className="max-w-6xl mx-auto px-4 md:px-16 py-3 md:py-6 grid grid-cols-3 divide-x divide-sand/20 text-center md:text-left">
+            <div className="pr-3 md:pr-8">
+              <p className="font-heading text-xs uppercase tracking-widest text-sand mb-0.5">Today</p>
               {weather ? (
-                <p className="font-heading text-2xl text-plum">
+                <p className="font-heading text-lg md:text-2xl text-plum">
                   {Math.round(weather.temperature)}°C
-                  <span className="text-sm font-normal text-plum/50 ml-2">
+                  <span className="hidden md:inline text-sm font-normal text-plum/50 ml-2">
                     {weather.wind_speed} km/h wind
                   </span>
                 </p>
@@ -148,20 +144,21 @@ export default async function HomePage() {
                 <p className="font-heading text-lg text-plum/40">—</p>
               )}
             </div>
-            <div className="px-8">
-              <p className="font-heading text-xs md:text-sm uppercase tracking-widest text-sand mb-1">Tasks due</p>
-              <p className="font-heading text-2xl text-plum">
+            <div className="px-3 md:px-8">
+              <p className="font-heading text-xs uppercase tracking-widest text-sand mb-0.5">Tasks due</p>
+              <p className="font-heading text-lg md:text-2xl text-plum">
                 {tasks.length}
-                <span className="text-sm font-normal text-plum/50 ml-2">in the next 2 days</span>
+                <span className="hidden md:inline text-sm font-normal text-plum/50 ml-2">in the next 2 days</span>
               </p>
             </div>
-            <div className="pl-8">
-              <p className="font-heading text-xs md:text-sm uppercase tracking-widest text-sand mb-1">Blooming in {currentMonthName}</p>
-              <p className="font-heading text-2xl text-plum">
+            <div className="pl-3 md:pl-8">
+              <p className="font-heading text-xs uppercase tracking-widest text-sand mb-0.5">
+                <span className="md:hidden">Blooming</span>
+                <span className="hidden md:inline">Blooming in {currentMonthName}</span>
+              </p>
+              <p className="font-heading text-lg md:text-2xl text-plum">
                 {bloomingCount}
-                <span className="text-sm font-normal text-plum/50 ml-2">
-                  {bloomingCount === 1 ? 'species' : 'species'}
-                </span>
+                <span className="hidden md:inline text-sm font-normal text-plum/50 ml-2">species</span>
               </p>
             </div>
           </div>
@@ -169,7 +166,7 @@ export default async function HomePage() {
       </section>
 
       {/* ── Why I built this ── */}
-      <section className="max-w-3xl mx-auto px-8 py-20">
+      <section className="max-w-4xl mx-auto px-8 py-20">
         <p className="font-heading text-xs md:text-sm uppercase tracking-widest text-terra mb-6">About this project</p>
         <h2 className="font-heading text-3xl md:text-4xl text-plum mb-10 leading-snug">
           Why grow fynbos on a rooftop?
@@ -196,7 +193,7 @@ export default async function HomePage() {
       </section>
 
       {/* ── Nav cards ── */}
-      <section className="max-w-6xl mx-auto px-8 pb-20">
+      <section className="max-w-4xl mx-auto px-8 pb-20">
         <p className="font-heading text-xs md:text-sm uppercase tracking-widest text-terra mb-10">Explore</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
@@ -282,20 +279,20 @@ export default async function HomePage() {
       </section>
 
       {/* ── Tech stack ── */}
-      <footer className="border-t border-sand/20 bg-mist">
-        <div className="max-w-4xl mx-auto px-8 py-10 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="font-heading text-xs md:text-sm uppercase tracking-widest text-plum/40">Built with</p>
+      <footer className="bg-terra">
+        <div className="px-16 py-10 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="font-heading text-xs md:text-sm uppercase tracking-widest text-white/60">Built with</p>
           <div className="flex flex-wrap gap-2 justify-center">
             {TECH_STACK.map(tech => (
               <span
                 key={tech}
-                className="font-heading text-xs font-medium text-plum/60 bg-sand/20 border border-sand/30 px-3 py-1 rounded-full"
+                className="font-heading text-xs font-medium text-white/80 bg-white/10 border border-white/20 px-3 py-1 rounded-full"
               >
                 {tech}
               </span>
             ))}
           </div>
-          <p className="font-body text-xs italic text-plum/30">Cape Town, {new Date().getFullYear()}</p>
+          <p className="font-body text-xs italic text-white/40">Cape Town, {new Date().getFullYear()}</p>
         </div>
       </footer>
 
