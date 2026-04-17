@@ -79,14 +79,15 @@ export default async function HomePage() {
       <SiteNav variant="light" />
 
       {/* ── Hero ── */}
-      <section className="relative h-[75vh] xl:h-[75vh] 2xl:h-[67vh] min-h-[480px] bg-gradient-to-br from-[#BF964B] from-[8%] to-[#3d2a08] overflow-hidden">
+      <section className="relative h-[75vh] xl:h-[75vh] 2xl:h-[67vh] min-h-[480px] bg-gradient-to-br from-[#8a6a2a] from-[8%] to-[#1e1606] overflow-hidden">
 
         {/* Inner container — constrains content to max-w-6xl */}
         <div className="relative max-w-6xl mx-auto h-full min-h-[480px]">
 
           {/* Circle image — rising from bottom, right half */}
           <div className="absolute rounded-full overflow-hidden
-            right-8 bottom-0 translate-y-[16%] h-[70vh] xl:h-[70vh] 2xl:h-[55vh] aspect-square">
+            right-8 bottom-0 translate-y-[16%] h-[70vh] xl:h-[70vh] 2xl:h-[55vh] aspect-square
+            shadow-[0_0_12px_4px_#BF964B]">
             <Image
               src="/large_hero_circle.jpeg"
               alt="Fynbos rooftop garden in Cape Town"
