@@ -51,7 +51,7 @@ export default function SiteNav({ variant = 'dark' }: { variant?: 'light' | 'dar
             <Link
               key={href}
               href={href}
-              className={`font-heading text-base font-medium transition-colors ${links}`}
+              className="font-heading text-base font-medium text-plum/70 hover:text-plum transition-colors"
               onClick={() => setOpen(false)}
             >
               {['Home', 'Map', 'Dashboard', 'Journal'][i]}
