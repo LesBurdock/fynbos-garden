@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import SiteNav from '@/components/ui/SiteNav';
+import ScrollReveal from '@/components/ui/ScrollReveal';
 import { createServerSupabaseClient } from '@/lib/supabase-server';
 import { fetchWeather } from '@/lib/weather';
 import { PlantPosition, Plant, JournalPost, GardenTask } from '@/lib/types';
@@ -82,9 +83,9 @@ export default async function HomePage() {
       <section className="relative h-[75vh] xl:h-[75vh] 2xl:h-[67vh] min-h-[480px] overflow-hidden bg-[#BF6836]">
 
         {/* Circle image — half off-screen right, vertically centered */}
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 h-[50vh] w-[50vh] rounded-full overflow-hidden">
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/4 h-[50vh] w-[50vh] rounded-full overflow-hidden">
           <Image
-            src="/benjamin-le-roux-UL-l7lmiWj4-unsplash (1).jpg"
+            src="/michala-li-hgqlXvW87Fo-unsplash.jpg"
             alt=""
             fill
             className="object-cover object-center"
@@ -96,7 +97,7 @@ export default async function HomePage() {
         <div className="relative max-w-6xl mx-auto h-full min-h-[480px]">
 
           {/* Text — anchored bottom-left */}
-          <div className="absolute bottom-12 md:bottom-16 left-8 right-8 md:right-auto z-10 md:max-w-xl">
+          <ScrollReveal className="absolute bottom-12 md:bottom-16 left-8 right-8 md:right-auto z-10 md:max-w-xl">
             <p className="font-body text-white/60 text-sm tracking-widest uppercase mb-3">
               Cape Town · Voëlklip · Native fynbos
             </p>
@@ -122,7 +123,7 @@ export default async function HomePage() {
                 View the dashboard →
               </Link>
             </div>
-          </div>
+          </ScrollReveal>
 
         </div>
       </section>
@@ -131,7 +132,7 @@ export default async function HomePage() {
       <section className="grid grid-cols-1 md:grid-cols-2">
 
         {/* Left — full-bleed image */}
-        <div className="relative min-h-[500px] md:min-h-0">
+        <ScrollReveal direction="left" className="relative min-h-[500px] md:min-h-0">
           <div className="absolute inset-0 overflow-hidden">
             <Image
               src="/grace-brauteseth-Gc64ErEtDis-unsplash (1).jpg"
@@ -139,13 +140,13 @@ export default async function HomePage() {
               fill
               className="object-cover"
             />
-          </div>
+            </div>
           {/* Vertical decorative line — escapes section downward */}
-          <div className="hidden md:block absolute top-full right-0 w-[2px] bg-plum h-[570px] z-0" />
-        </div>
+          <div className="hidden md:block absolute top-full right-0 w-[2px] bg-terra h-[580px] z-0" />
+        </ScrollReveal>
 
         {/* Right — text */}
-        <div className="relative flex flex-col justify-center px-12 md:px-16 py-20">
+        <ScrollReveal direction="right" delay={0.15} className="relative flex flex-col justify-center px-12 md:px-16 py-20">
           <div className="absolute left-8 top-0 bottom-0 w-[2px] bg-terra/30" />
           <p className="font-heading text-xs md:text-sm uppercase tracking-widest text-terra mb-6">About this project</p>
           <h2 className="font-heading text-3xl md:text-4xl text-plum mb-10 leading-snug">
@@ -170,12 +171,13 @@ export default async function HomePage() {
               The garden and the code grow together.
             </p>
           </div>
-        </div>
+        </ScrollReveal>
 
       </section>
       <div className="h-[2px] bg-plum w-full" />
 
       {/* ── Stat strip ── */}
+      <ScrollReveal>
       <div className="relative z-10 bg-terra mt-8">
         <div className="max-w-6xl mx-auto px-4 md:px-16 py-3 md:py-6 grid grid-cols-4 divide-x divide-white/20 text-center md:text-left">
           <div className="pr-3 md:pr-8">
@@ -217,12 +219,13 @@ export default async function HomePage() {
           </div>
         </div>
       </div>
+      </ScrollReveal>
 
       {/* ── Nav cards ── */}
-      <section className="grid grid-cols-2 md:grid-cols-[1fr_1fr_1.5rem_1fr_1fr] h-[400px] bg-mist mt-4">
+      <section className="grid grid-cols-2 md:grid-cols-[1fr_1fr_1.5rem_1fr_1fr] h-[448px] bg-mist items-start">
 
-        {/* Col 1 — image */}
-        <div className="relative overflow-hidden">
+        {/* Col 1 — image: starts at top (touches stat strip), 400px tall */}
+        <div className="relative overflow-hidden self-start h-[400px]">
           <Image
             src="/grace-brauteseth-qJrs-9jpCtU-unsplash (1).jpg"
             alt="Fynbos garden"
@@ -231,8 +234,8 @@ export default async function HomePage() {
           />
         </div>
 
-        {/* Col 2 — explore the garden */}
-        <Link href="/garden" className="group flex flex-col justify-center px-8 md:px-10 bg-plum hover:bg-plum/80 transition-colors">
+        {/* Col 2 — explore the garden: sits at bottom (touches terra line), 400px tall */}
+        <Link href="/garden" className="group flex flex-col justify-center px-8 md:px-10 bg-plum hover:bg-plum/80 transition-colors self-end h-[400px]">
           <p className="font-heading text-xs uppercase tracking-widest text-terra mb-3">Interactive map</p>
           <h3 className="font-heading text-2xl md:text-3xl text-white leading-snug mb-2">
             Explore the garden
@@ -241,10 +244,10 @@ export default async function HomePage() {
         </Link>
 
         {/* Mist gap */}
-        <div className="hidden md:block bg-mist" />
+        <div className="hidden md:block bg-mist self-start h-[400px]" />
 
-        {/* Col 3 — view the dashboard */}
-        <Link href="/dashboard" className="group flex flex-col justify-center px-8 md:px-10 bg-plum hover:bg-plum/80 transition-colors">
+        {/* Col 3 — view the dashboard: sits at bottom (touches terra line), 400px tall */}
+        <Link href="/dashboard" className="group flex flex-col justify-center px-8 md:px-10 bg-plum hover:bg-plum/80 transition-colors self-start h-[400px]">
           <p className="font-heading text-xs uppercase tracking-widest text-terra mb-3">Live data</p>
           <h3 className="font-heading text-2xl md:text-3xl text-white leading-snug mb-2">
             View the dashboard
@@ -252,8 +255,8 @@ export default async function HomePage() {
           <p className="font-body text-sm italic text-white/50">Weather, health, bloom calendar →</p>
         </Link>
 
-        {/* Col 4 — image */}
-        <div className="relative overflow-hidden">
+        {/* Col 4 — image: sits at bottom (touches terra line), 400px tall */}
+        <div className="relative overflow-hidden self-end h-[400px]">
           <Image
             src="/janine-joles-K1_OIPf9F0I-unsplash.jpg"
             alt="Garden dashboard"
@@ -263,11 +266,11 @@ export default async function HomePage() {
         </div>
 
       </section>
-      <div className="h-[2px] bg-terra w-full mt-8" />
+      <div className="h-[2px] bg-terra w-full" />
 
 
       {/* ── Journal posts ── */}
-      <section className="bg-mist border-t border-sand/20">
+      <section className="bg-white border-t border-sand/20">
         <div className="max-w-6xl mx-auto px-8 py-20">
           <div className="flex items-end justify-between mb-10">
             <div>
@@ -289,8 +292,9 @@ export default async function HomePage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {posts.map(post => (
-                <article key={post.id} className="group cursor-pointer">
+              {posts.map((post, i) => (
+                <ScrollReveal key={post.id} delay={i * 0.12}>
+                <article className="group cursor-pointer">
                   <div className="mb-3">
                     <span className="inline-block font-heading text-xs md:text-sm uppercase tracking-widest text-terra bg-terra/10 px-3 py-1 rounded-full">
                       {post.category}
@@ -306,6 +310,7 @@ export default async function HomePage() {
                     {new Date(post.published_at).toLocaleDateString('en-ZA', { day: 'numeric', month: 'long', year: 'numeric' })}
                   </p>
                 </article>
+                </ScrollReveal>
               ))}
             </div>
           )}

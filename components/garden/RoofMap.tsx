@@ -89,7 +89,7 @@ export default function RoofMap({
         width={580 + 20} height={424 + 20}
         fill="none"
         stroke="#a8a29e"
-        strokeWidth="10"
+        strokeWidth="2"
         rx={2}
       />
 

@@ -1,19 +1,17 @@
 import type { Metadata } from "next";
-import { Hanken_Grotesk, Fraunces } from "next/font/google";
+import { Manrope, Sora } from "next/font/google";
 import "./globals.css";
 
-const hanken = Hanken_Grotesk({
-  variable: "--font-hanken",
+const manrope = Manrope({
+  variable: "--font-manrope",
   subsets: ["latin"],
   display: "swap",
-  weight: "400",
 });
 
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
+const sora = Sora({
+  variable: "--font-sora",
   subsets: ["latin"],
   display: "swap",
-  weight: "300",
 });
 
 export const metadata: Metadata = {
@@ -29,7 +27,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${hanken.variable} ${fraunces.variable} h-full antialiased`}
+      className={`${manrope.variable} ${sora.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-body bg-mist text-plum">{children}</body>
     </html>
