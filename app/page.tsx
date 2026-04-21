@@ -220,7 +220,7 @@ export default async function HomePage() {
       <div className="h-[2px] bg-plum w-full" />
 
       {/* ── Nav cards ── */}
-      <section className="relative grid grid-cols-2 md:grid-cols-4 h-[448px] bg-mist items-start">
+      <section className="relative grid grid-cols-2 md:grid-cols-4 md:h-[448px] bg-mist items-start overflow-hidden">
         <div className="hidden md:block absolute top-0 left-1/2 w-[2px] bg-terra h-full z-10 pointer-events-none" />
 
         {/* Col 1 — image: starts at top (touches stat strip), 400px tall */}
