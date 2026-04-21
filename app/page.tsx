@@ -128,57 +128,9 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── Why I built this ── */}
-      <section className="grid grid-cols-1 md:grid-cols-2">
-
-        {/* Left — full-bleed image */}
-        <ScrollReveal direction="left" className="relative min-h-[500px] md:min-h-0">
-          <div className="absolute inset-0 overflow-hidden">
-            <Image
-              src="/grace-brauteseth-Gc64ErEtDis-unsplash (1).jpg"
-              alt="Fynbos in bloom"
-              fill
-              className="object-cover"
-            />
-            </div>
-          {/* Vertical decorative line — escapes section downward */}
-          <div className="hidden md:block absolute top-full right-0 w-[2px] bg-terra h-[580px] z-0" />
-        </ScrollReveal>
-
-        {/* Right — text */}
-        <ScrollReveal direction="right" delay={0.15} className="relative flex flex-col justify-center px-12 md:px-16 py-20">
-          <div className="absolute left-8 top-0 bottom-0 w-[2px] bg-terra/30" />
-          <p className="font-heading text-xs md:text-sm uppercase tracking-widest text-terra mb-6">About this project</p>
-          <h2 className="font-heading text-3xl md:text-4xl text-plum mb-10 leading-snug">
-            Why grow fynbos on a rooftop?
-          </h2>
-          <div className="space-y-6 font-body text-lg leading-relaxed text-plum/80">
-            <p>
-              I&apos;ve always been drawn to the Cape Floral Kingdom — the fynbos biome is one of the most
-              biodiverse places on earth, and yet most of it grows in thin, nutrient-poor soils on windswept
-              hillsides. It seemed perverse, and then perfectly logical, to try to recreate that on top of a
-              Cape Town building.
-            </p>
-            <p>
-              The practical challenge is real: weight limits, ferocious south-easterly winds, full exposure to
-              the summer sun, and the unforgiving drainage that fynbos needs but rooftop containers struggle to
-              provide. Every plant here has been chosen because it can handle all of that — or because I wanted
-              to find out if it could.
-            </p>
-            <p>
-              This site is both a tool and a record. I built it to track what&apos;s thriving, what&apos;s struggling,
-              and what I&apos;ve learned — and to practise building something with real data and a reason to exist.
-              The garden and the code grow together.
-            </p>
-          </div>
-        </ScrollReveal>
-
-      </section>
-      <div className="h-[2px] bg-plum w-full" />
-
       {/* ── Stat strip ── */}
       <ScrollReveal>
-      <div className="relative z-10 bg-terra mt-8">
+      <div className="relative z-10 bg-terra border-t border-white/30">
         <div className="max-w-6xl mx-auto px-4 md:px-16 py-3 md:py-6 grid grid-cols-4 divide-x divide-white/20 text-center md:text-left">
           <div className="pr-3 md:pr-8">
             <p className="font-heading text-xs uppercase tracking-widest text-white/50 mb-0.5">Today</p>
@@ -221,8 +173,55 @@ export default async function HomePage() {
       </div>
       </ScrollReveal>
 
+      {/* ── Why I built this ── */}
+      <section className="grid grid-cols-1 md:grid-cols-2">
+
+        {/* Left — full-bleed image */}
+        <ScrollReveal direction="left" className="relative min-h-[500px] md:min-h-0">
+          <div className="absolute inset-0 overflow-hidden">
+            <Image
+              src="/grace-brauteseth-Gc64ErEtDis-unsplash (1).jpg"
+              alt="Fynbos in bloom"
+              fill
+              className="object-cover"
+            />
+            </div>
+        </ScrollReveal>
+
+        {/* Right — text */}
+        <ScrollReveal direction="right" delay={0.15} className="relative flex flex-col justify-center px-12 md:px-16 py-20">
+          <div className="absolute left-8 top-0 bottom-0 w-[2px] bg-terra/30" />
+          <p className="font-heading text-xs md:text-sm uppercase tracking-widest text-terra mb-6">About this project</p>
+          <h2 className="font-heading text-3xl md:text-4xl text-plum mb-10 leading-snug">
+            Why grow fynbos on a rooftop?
+          </h2>
+          <div className="space-y-6 font-body text-lg leading-relaxed text-plum/80">
+            <p>
+              I&apos;ve always been drawn to the Cape Floral Kingdom — the fynbos biome is one of the most
+              biodiverse places on earth, and yet most of it grows in thin, nutrient-poor soils on windswept
+              hillsides. It seemed perverse, and then perfectly logical, to try to recreate that on top of a
+              Cape Town building.
+            </p>
+            <p>
+              The practical challenge is real: weight limits, ferocious south-easterly winds, full exposure to
+              the summer sun, and the unforgiving drainage that fynbos needs but rooftop containers struggle to
+              provide. Every plant here has been chosen because it can handle all of that — or because I wanted
+              to find out if it could.
+            </p>
+            <p>
+              This site is both a tool and a record. I built it to track what&apos;s thriving, what&apos;s struggling,
+              and what I&apos;ve learned — and to practise building something with real data and a reason to exist.
+              The garden and the code grow together.
+            </p>
+          </div>
+        </ScrollReveal>
+
+      </section>
+      <div className="h-[2px] bg-plum w-full" />
+
       {/* ── Nav cards ── */}
-      <section className="grid grid-cols-2 md:grid-cols-[1fr_1fr_1.5rem_1fr_1fr] h-[448px] bg-mist items-start">
+      <section className="relative grid grid-cols-2 md:grid-cols-4 h-[448px] bg-mist items-start">
+        <div className="hidden md:block absolute top-0 left-1/2 w-[2px] bg-terra h-full z-10 pointer-events-none" />
 
         {/* Col 1 — image: starts at top (touches stat strip), 400px tall */}
         <div className="relative overflow-hidden self-start h-[400px]">
@@ -242,9 +241,6 @@ export default async function HomePage() {
           </h3>
           <p className="font-body text-sm italic text-white/50">Click any plant to learn more →</p>
         </Link>
-
-        {/* Mist gap */}
-        <div className="hidden md:block bg-mist self-start h-[400px]" />
 
         {/* Col 3 — view the dashboard: sits at bottom (touches terra line), 400px tall */}
         <Link href="/dashboard" className="group flex flex-col justify-center px-8 md:px-10 bg-plum hover:bg-plum/80 transition-colors self-start h-[400px]">
