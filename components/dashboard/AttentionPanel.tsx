@@ -34,14 +34,18 @@ export default function AttentionPanel({ wateringDue, seasonalAlerts, upcomingTa
               message={`${zone.name} — ${daysSince === null ? 'never watered' : `last watered ${daysSince} day${daysSince === 1 ? '' : 's'} ago`}`}
             />
           ))}
-          {seasonalAlerts.map((a, i) => (
-            <AlertRow
-              key={i}
-              colour="amber"
-              label="Seasonal"
-              message={`${a.plantName} — ${a.task}`}
-            />
-          ))}
+          {seasonalAlerts.length === 0 ? (
+            <AlertRow colour="amber" label="Seasonal" message="No seasonal tasks due this month" />
+          ) : (
+            seasonalAlerts.map((a, i) => (
+              <AlertRow
+                key={i}
+                colour="amber"
+                label="Seasonal"
+                message={`${a.plantName} — ${a.task}`}
+              />
+            ))
+          )}
           {upcomingTasks.map(t => (
             <AlertRow
               key={t.id}

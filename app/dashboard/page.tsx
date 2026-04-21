@@ -1,8 +1,9 @@
 import Image from 'next/image';
 import { createServerSupabaseClient } from '@/lib/supabase-server';
-import { Zone, PlantPosition, WateringLog, Plant } from '@/lib/types';
+import { Zone, PlantPosition, WateringLog, Plant, GardenTask } from '@/lib/types';
 import { fetchWeather } from '@/lib/weather';
 import SiteNav from '@/components/ui/SiteNav';
+import AttentionPanel from '@/components/dashboard/AttentionPanel';
 import WeatherWidget from '@/components/dashboard/WeatherWidget';
 import HealthSnapshot from '@/components/dashboard/HealthSnapshot';
 import BloomCalendar from '@/components/dashboard/BloomCalendar';
@@ -58,18 +59,21 @@ export default async function DashboardPage() {
   const monthName = MONTH_NAMES[today.getMonth()];
 
   const sevenDaysAgoStr = new Date(today.getTime() - 7 * 864e5).toISOString().split('T')[0];
+  const twoDaysOutStr   = new Date(today.getTime() + 2 * 864e5).toISOString().split('T')[0];
 
   const [
     { data: zonesData },
     { data: positionsData },
     { data: wateringData },
     { data: careData },
+    { data: tasksData },
     weather,
   ] = await Promise.all([
     supabase.from('zones').select('*').order('name'),
     supabase.from('plant_positions').select('*, plants(*)').is('removed_at', null),
     supabase.from('watering_log').select('*').order('watered_at', { ascending: false }),
     supabase.from('care_log').select('id, logged_at, action, plant_positions(plants(name))').order('logged_at', { ascending: false }).limit(8),
+    supabase.from('garden_tasks').select('*').is('completed_at', null).lte('due_date', twoDaysOutStr).order('due_date'),
     fetchWeather(),
   ]);
 
@@ -77,6 +81,7 @@ export default async function DashboardPage() {
   const positions    = (positionsData  ?? []) as PositionWithPlant[];
   const wateringLogs = (wateringData   ?? []) as WateringLog[];
   const careLogs     = (careData       ?? []) as unknown as RawCareLog[];
+  const tasks        = (tasksData      ?? []) as GardenTask[];
 
   // Watering due
   const latestWatering = new Map<string, Date>();
@@ -93,6 +98,23 @@ export default async function DashboardPage() {
       lastWateredDate: latestDate ? latestDate.toISOString().split('T')[0] : null,
     };
   });
+
+  // Seasonal alerts
+  const seasonalAlerts = positions.flatMap(p => {
+    if (!p.plants?.seasonal_tasks?.length) return [];
+    return p.plants.seasonal_tasks
+      .filter(t => currentMonth >= t.month_start && currentMonth <= t.month_end)
+      .map(t => ({ plantName: p.plants!.name, task: t.task }));
+  });
+
+  // Upcoming tasks
+  const upcomingTasks = tasks.map(t => ({
+    id: t.id,
+    title: t.title,
+    zoneName: null,
+    due_date: t.due_date,
+    task_type: t.task_type,
+  }));
 
   // Health
   const healthy       = positions.filter(p => p.health_status === 'healthy').length;
@@ -152,6 +174,13 @@ export default async function DashboardPage() {
       </div>
 
       <main className="relative z-10 max-w-5xl mx-auto px-6 pt-48 pb-12 space-y-5">
+
+        {/* Attention panel */}
+        <AttentionPanel
+          wateringDue={zoneStatuses.filter(z => z.daysSince === null || z.daysSince > 5).map(z => ({ zone: z.zone, daysSince: z.daysSince }))}
+          seasonalAlerts={seasonalAlerts}
+          upcomingTasks={upcomingTasks}
+        />
 
         {/* Top row: 4 cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
