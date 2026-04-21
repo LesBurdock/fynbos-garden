@@ -3,13 +3,13 @@
 import { useState } from 'react';
 import Link from 'next/link';
 
-export default function SiteNav({ variant = 'dark' }: { variant?: 'light' | 'dark' }) {
+export default function SiteNav({ variant = 'dark', solidBg = false }: { variant?: 'light' | 'dark'; solidBg?: boolean }) {
   const [open, setOpen] = useState(false);
   const logo = variant === 'light' ? 'text-white/80 hover:text-white' : 'text-terra hover:text-terra/70';
   const links = variant === 'light' ? 'text-white/70 hover:text-white' : 'text-terra/80 hover:text-terra';
 
   return (
-    <nav className="absolute top-0 left-0 right-0 z-30">
+    <nav className={`absolute top-0 left-0 right-0 z-30 ${solidBg ? 'bg-mist' : ''}`}>
       <div className="max-w-6xl mx-auto px-8 flex items-center justify-between py-6 md:py-8">
         <Link
           href="/"
@@ -51,7 +51,7 @@ export default function SiteNav({ variant = 'dark' }: { variant?: 'light' | 'dar
             <Link
               key={href}
               href={href}
-              className={`font-heading text-base font-medium transition-colors ${links}`}
+              className="font-heading text-base font-medium text-plum/70 hover:text-plum transition-colors"
               onClick={() => setOpen(false)}
             >
               {['Home', 'Map', 'Dashboard', 'Journal'][i]}

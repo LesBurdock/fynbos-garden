@@ -55,8 +55,8 @@ export default function GardenMap({ zones, positions, plants, careLogs }: Props)
       <div className="shrink-0 border-b border-sand/20 bg-white">
         <div className="px-6 py-4 flex items-center justify-between">
           <div>
-            <h1 className="font-heading text-lg font-bold text-plum">Fynbos Rooftop Garden</h1>
-            <p className="text-sm md:text-base text-sand mt-0.5 font-body">Cape Town · click a plant or zone to explore</p>
+            <h1 className="font-heading text-2xl md:text-3xl font-bold text-plum">Fynbos Rooftop Garden</h1>
+            <p className="text-base md:text-lg text-terra mt-1 font-body italic">Cape Town · click a plant or zone to explore</p>
           </div>
           {/* Desktop links */}
           <div className="hidden md:flex items-center gap-4 font-heading text-sm text-plum/60">
@@ -84,16 +84,17 @@ export default function GardenMap({ zones, positions, plants, careLogs }: Props)
         )}
       </div>
 
-      {/* Health status bar */}
-      <div className="hidden md:flex items-center gap-6 px-6 py-3 border-b border-sand/20 bg-white">
-        <LegendDot color="bg-green-500" label={`${healthy} Healthy`} />
-        <LegendDot color="bg-amber-500" label={`${struggling} Struggling`} />
-        <LegendDot color="bg-red-500" label={`${dead} Dead`} />
-      </div>
-
       {/* Desktop map */}
       <div className="hidden md:flex flex-1 min-h-0">
-        <div className={`flex-1 flex items-center justify-center p-6 min-w-0 transition-all duration-200 ${panelOpen ? 'mr-[400px]' : ''}`}>
+
+        {/* Stacked legend — left side */}
+        <div className="flex flex-col justify-center gap-4 px-5 border-r border-sand/20 bg-white shrink-0">
+          <LegendDot color="bg-green-500" label={`${healthy}`} sublabel="Healthy" />
+          <LegendDot color="bg-amber-500" label={`${struggling}`} sublabel="Struggling" />
+          <LegendDot color="bg-red-500" label={`${dead}`} sublabel="Dead" />
+        </div>
+
+        <div className={`flex-1 flex items-center justify-center min-w-0 transition-all duration-200 ${panelOpen ? 'mr-[400px]' : ''}`}>
           <div className="w-full max-w-3xl aspect-[630/474]">
             <RoofMap
               zones={zones}
@@ -146,11 +147,16 @@ export default function GardenMap({ zones, positions, plants, careLogs }: Props)
   );
 }
 
-function LegendDot({ color, label }: { color: string; label: string }) {
+function LegendDot({ color, label, sublabel }: { color: string; label: string; sublabel?: string }) {
   return (
-    <span className="flex items-center gap-1.5 font-heading text-sm text-plum/60">
-      <span className={`inline-block w-2 h-2 rounded-full ${color}`} />
-      {label}
+    <span className="flex items-center gap-2 font-heading text-sm text-plum/60">
+      <span className={`inline-block w-2 h-2 rounded-full shrink-0 ${color}`} />
+      {sublabel ? (
+        <span className="flex flex-col leading-tight">
+          <span className="text-plum font-medium">{label}</span>
+          <span className="text-xs text-plum/40">{sublabel}</span>
+        </span>
+      ) : label}
     </span>
   );
 }

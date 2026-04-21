@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import SiteNav from '@/components/ui/SiteNav';
+import ScrollReveal from '@/components/ui/ScrollReveal';
 import { createServerSupabaseClient } from '@/lib/supabase-server';
 import { fetchWeather } from '@/lib/weather';
 import { PlantPosition, Plant, JournalPost, GardenTask } from '@/lib/types';
@@ -79,34 +80,31 @@ export default async function HomePage() {
       <SiteNav variant="light" />
 
       {/* ── Hero ── */}
-      <section className="relative h-[75vh] xl:h-[75vh] 2xl:h-[67vh] min-h-[480px] bg-gradient-to-br from-[#8a6a2a] from-[8%] to-[#1e1606] overflow-hidden">
+      <section className="relative h-[75vh] xl:h-[75vh] 2xl:h-[67vh] min-h-[480px] overflow-hidden bg-[#BF6836]">
+
+        {/* Circle image — half off-screen right, vertically centered */}
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/4 h-[50vh] w-[50vh] rounded-full overflow-hidden">
+          <Image
+            src="/michala-li-hgqlXvW87Fo-unsplash.jpg"
+            alt=""
+            fill
+            className="object-cover object-center"
+            priority
+          />
+        </div>
 
         {/* Inner container — constrains content to max-w-6xl */}
         <div className="relative max-w-6xl mx-auto h-full min-h-[480px]">
 
-          {/* Circle image — rising from bottom, right half */}
-          <div className="absolute rounded-full overflow-hidden
-            right-8 bottom-0 translate-y-[16%] h-[70vh] xl:h-[70vh] 2xl:h-[55vh] aspect-square
-            shadow-[0_0_12px_4px_#BF964B]">
-            <Image
-              src="/large_hero_circle.jpeg"
-              alt="Fynbos rooftop garden in Cape Town"
-              fill
-              className="object-cover"
-              priority
-            />
-            <div className="absolute inset-0 bg-plum/40 rounded-full" />
-          </div>
-
           {/* Text — anchored bottom-left */}
-          <div className="absolute bottom-12 md:bottom-16 left-8 right-8 md:right-auto z-10 md:max-w-xl">
-            <p className="font-body text-white/50 text-sm tracking-widest uppercase mb-3">
+          <ScrollReveal className="absolute bottom-12 md:bottom-16 left-8 right-8 md:right-auto z-10 md:max-w-xl">
+            <p className="font-body text-white/60 text-sm tracking-widest uppercase mb-3">
               Cape Town · Voëlklip · Native fynbos
             </p>
             <h1 className="font-heading text-5xl md:text-6xl text-white leading-tight mb-4">
               A garden in the sky.
             </h1>
-            <p className="font-body text-white/70 text-xl md:text-2xl italic leading-relaxed mb-8">
+            <p className="font-body text-white/75 text-xl md:text-2xl italic leading-relaxed mb-8">
               Thirty-five species of South African fynbos, planted above the city and watched closely.
             </p>
 
@@ -114,135 +112,158 @@ export default async function HomePage() {
             <div className="flex flex-wrap gap-4">
               <Link
                 href="/garden"
-                className="font-heading text-sm font-medium text-white border border-white/30 hover:bg-white hover:text-plum transition-colors px-5 py-2.5 rounded-full"
+                className="font-heading text-sm font-medium text-white border border-white/40 hover:bg-white hover:text-plum transition-colors px-5 py-2.5 rounded-full"
               >
                 Explore the map →
               </Link>
               <Link
                 href="/dashboard"
-                className="font-heading text-sm font-medium text-white border border-white/30 hover:bg-white hover:text-plum transition-colors px-5 py-2.5 rounded-full"
+                className="font-heading text-sm font-medium text-white border border-white/40 hover:bg-white hover:text-plum transition-colors px-5 py-2.5 rounded-full"
               >
                 View the dashboard →
               </Link>
             </div>
-          </div>
+          </ScrollReveal>
 
         </div>
       </section>
 
       {/* ── Stat strip ── */}
-      <div className="bg-mist border-t-2 border-sand/40">
-        <div className="max-w-6xl mx-auto px-4 md:px-16 py-3 md:py-6 grid grid-cols-4 divide-x divide-sand/20 text-center md:text-left">
+      <ScrollReveal>
+      <div className="relative z-10 bg-terra border-t border-white/30">
+        <div className="max-w-6xl mx-auto px-4 md:px-16 py-3 md:py-6 grid grid-cols-4 divide-x divide-white/20 text-center md:text-left">
           <div className="pr-3 md:pr-8">
-            <p className="font-heading text-xs uppercase tracking-widest text-sand mb-0.5">Today</p>
+            <p className="font-heading text-xs uppercase tracking-widest text-white/50 mb-0.5">Today</p>
             {weather ? (
-              <p className="font-heading text-lg md:text-2xl text-plum">
+              <p className="font-heading text-lg md:text-2xl text-white">
                 {Math.round(weather.temperature)}°C
-                <span className="hidden md:inline text-sm font-normal text-plum/50 ml-2">
+                <span className="hidden md:inline text-sm font-normal text-white/50 ml-2">
                   {weather.wind_speed} km/h wind
                 </span>
               </p>
             ) : (
-              <p className="font-heading text-lg text-plum/40">—</p>
+              <p className="font-heading text-lg text-white/40">—</p>
             )}
           </div>
           <div className="px-3 md:px-8">
-            <p className="font-heading text-xs uppercase tracking-widest text-sand mb-0.5">Tasks due</p>
-            <p className="font-heading text-lg md:text-2xl text-plum">
+            <p className="font-heading text-xs uppercase tracking-widest text-white/50 mb-0.5">Tasks due</p>
+            <p className="font-heading text-lg md:text-2xl text-white">
               {tasks.length}
-              <span className="hidden md:inline text-sm font-normal text-plum/50 ml-2">in the next 2 days</span>
+              <span className="hidden md:inline text-sm font-normal text-white/50 ml-2">in the next 2 days</span>
             </p>
           </div>
           <div className="px-3 md:px-8">
-            <p className="font-heading text-xs uppercase tracking-widest text-sand mb-0.5">
+            <p className="font-heading text-xs uppercase tracking-widest text-white/50 mb-0.5">
               <span className="md:hidden">Blooming</span>
               <span className="hidden md:inline">Blooming in {currentMonthName}</span>
             </p>
-            <p className="font-heading text-lg md:text-2xl text-plum">
+            <p className="font-heading text-lg md:text-2xl text-white">
               {bloomingCount}
-              <span className="hidden md:inline text-sm font-normal text-plum/50 ml-2">species</span>
+              <span className="hidden md:inline text-sm font-normal text-white/50 ml-2">species</span>
             </p>
           </div>
           <div className="pl-3 md:pl-8">
-            <p className="font-heading text-xs uppercase tracking-widest text-sand mb-0.5">Plants thriving</p>
-            <p className="font-heading text-lg md:text-2xl text-plum">
+            <p className="font-heading text-xs uppercase tracking-widest text-white/50 mb-0.5">Plants thriving</p>
+            <p className="font-heading text-lg md:text-2xl text-white">
               {healthy}
-              <span className="hidden md:inline text-sm font-normal text-plum/50 ml-2">of {positions.length}</span>
+              <span className="hidden md:inline text-sm font-normal text-white/50 ml-2">of {positions.length}</span>
             </p>
           </div>
         </div>
       </div>
+      </ScrollReveal>
 
       {/* ── Why I built this ── */}
-      <section className="max-w-6xl mx-auto px-8 py-20">
-        <p className="font-heading text-xs md:text-sm uppercase tracking-widest text-terra mb-6">About this project</p>
-        <h2 className="font-heading text-3xl md:text-4xl text-plum mb-10 leading-snug">
-          Why grow fynbos on a rooftop?
-        </h2>
-        <div className="space-y-6 font-body text-lg leading-relaxed text-plum/80 border-l-2 border-terra/30 pl-8">
-          <p>
-            I&apos;ve always been drawn to the Cape Floral Kingdom — the fynbos biome is one of the most
-            biodiverse places on earth, and yet most of it grows in thin, nutrient-poor soils on windswept
-            hillsides. It seemed perverse, and then perfectly logical, to try to recreate that on top of a
-            Cape Town building.
-          </p>
-          <p>
-            The practical challenge is real: weight limits, ferocious south-easterly winds, full exposure to
-            the summer sun, and the unforgiving drainage that fynbos needs but rooftop containers struggle to
-            provide. Every plant here has been chosen because it can handle all of that — or because I wanted
-            to find out if it could.
-          </p>
-          <p>
-            This site is both a tool and a record. I built it to track what&apos;s thriving, what&apos;s struggling,
-            and what I&apos;ve learned — and to practise building something with real data and a reason to exist.
-            The garden and the code grow together.
-          </p>
-        </div>
+      <section className="grid grid-cols-1 md:grid-cols-2">
+
+        {/* Left — full-bleed image */}
+        <ScrollReveal direction="left" className="relative min-h-[500px] md:min-h-0">
+          <div className="absolute inset-0 overflow-hidden">
+            <Image
+              src="/grace-brauteseth-Gc64ErEtDis-unsplash (1).jpg"
+              alt="Fynbos in bloom"
+              fill
+              className="object-cover"
+            />
+            </div>
+        </ScrollReveal>
+
+        {/* Right — text */}
+        <ScrollReveal direction="right" delay={0.15} className="relative flex flex-col justify-center px-12 md:px-16 py-20">
+          <div className="absolute left-8 top-0 bottom-0 w-[2px] bg-terra/30" />
+          <p className="font-heading text-xs md:text-sm uppercase tracking-widest text-terra mb-6">About this project</p>
+          <h2 className="font-heading text-3xl md:text-4xl text-plum mb-10 leading-snug">
+            Why grow fynbos on a rooftop?
+          </h2>
+          <div className="space-y-6 font-body text-lg leading-relaxed text-plum/80">
+            <p>
+              I&apos;ve always been drawn to the Cape Floral Kingdom — the fynbos biome is one of the most
+              biodiverse places on earth, and yet most of it grows in thin, nutrient-poor soils on windswept
+              hillsides. It seemed perverse, and then perfectly logical, to try to recreate that on top of a
+              Cape Town building.
+            </p>
+            <p>
+              The practical challenge is real: weight limits, ferocious south-easterly winds, full exposure to
+              the summer sun, and the unforgiving drainage that fynbos needs but rooftop containers struggle to
+              provide. Every plant here has been chosen because it can handle all of that — or because I wanted
+              to find out if it could.
+            </p>
+            <p>
+              This site is both a tool and a record. I built it to track what&apos;s thriving, what&apos;s struggling,
+              and what I&apos;ve learned — and to practise building something with real data and a reason to exist.
+              The garden and the code grow together.
+            </p>
+          </div>
+        </ScrollReveal>
+
       </section>
+      <div className="h-[2px] bg-plum w-full" />
 
       {/* ── Nav cards ── */}
-      <section className="max-w-6xl mx-auto px-8 pb-20">
-        <p className="font-heading text-xs md:text-sm uppercase tracking-widest text-terra mb-10">Explore</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <section className="relative grid grid-cols-2 md:grid-cols-4 h-[448px] bg-mist items-start">
+        <div className="hidden md:block absolute top-0 left-1/2 w-[2px] bg-terra h-full z-10 pointer-events-none" />
 
-          {/* Garden map card */}
-          <Link href="/garden" className="group relative block w-full aspect-square overflow-visible flex items-center justify-center">
-            <div className="w-2/3 aspect-square rounded-full overflow-hidden">
-              <Image
-                src="/grace-brauteseth-qJrs-9jpCtU-unsplash (1).jpg"
-                alt="Garden map"
-                width={800}
-                height={800}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-            </div>
-            <div className="absolute top-8 left-0 flex flex-col py-4 pl-4 pr-4 text-left bg-mist/70 backdrop-blur-sm">
-              <p className="font-heading text-xs md:text-sm uppercase tracking-widest text-sand mb-1">Interactive map</p>
-              <h3 className="font-heading text-2xl text-plum mb-1">Explore the garden</h3>
-              <p className="font-body text-plum/60 text-sm italic">Click any plant to learn more</p>
-            </div>
-          </Link>
-
-          {/* Dashboard card */}
-          <Link href="/dashboard" className="group relative block w-full aspect-square overflow-visible flex items-center justify-center">
-            <div className="w-2/3 aspect-square rounded-full overflow-hidden">
-              <Image
-                src="/janine-joles-K1_OIPf9F0I-unsplash.jpg"
-                alt="Garden dashboard"
-                width={800}
-                height={800}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-            </div>
-            <div className="absolute top-8 right-0 flex flex-col py-4 pr-4 pl-4 text-right bg-mist/70 backdrop-blur-sm">
-              <p className="font-heading text-xs md:text-sm uppercase tracking-widest text-sand mb-1">Live data</p>
-              <h3 className="font-heading text-2xl text-plum mb-1">View the dashboard</h3>
-              <p className="font-body text-plum/60 text-sm italic">Weather, health, bloom calendar</p>
-            </div>
-          </Link>
-
+        {/* Col 1 — image: starts at top (touches stat strip), 400px tall */}
+        <div className="relative overflow-hidden self-start h-[400px]">
+          <Image
+            src="/grace-brauteseth-qJrs-9jpCtU-unsplash (1).jpg"
+            alt="Fynbos garden"
+            fill
+            className="object-cover"
+          />
         </div>
+
+        {/* Col 2 — explore the garden: sits at bottom (touches terra line), 400px tall */}
+        <Link href="/garden" className="group flex flex-col justify-center px-8 md:px-10 bg-plum hover:bg-plum/80 transition-colors self-end h-[400px]">
+          <p className="font-heading text-xs uppercase tracking-widest text-terra mb-3">Interactive map</p>
+          <h3 className="font-heading text-2xl md:text-3xl text-white leading-snug mb-2">
+            Explore the garden
+          </h3>
+          <p className="font-body text-sm italic text-white/50">Click any plant to learn more →</p>
+        </Link>
+
+        {/* Col 3 — view the dashboard: sits at bottom (touches terra line), 400px tall */}
+        <Link href="/dashboard" className="group flex flex-col justify-center px-8 md:px-10 bg-plum hover:bg-plum/80 transition-colors self-start h-[400px]">
+          <p className="font-heading text-xs uppercase tracking-widest text-terra mb-3">Live data</p>
+          <h3 className="font-heading text-2xl md:text-3xl text-white leading-snug mb-2">
+            View the dashboard
+          </h3>
+          <p className="font-body text-sm italic text-white/50">Weather, health, bloom calendar →</p>
+        </Link>
+
+        {/* Col 4 — image: sits at bottom (touches terra line), 400px tall */}
+        <div className="relative overflow-hidden self-end h-[400px]">
+          <Image
+            src="/janine-joles-K1_OIPf9F0I-unsplash.jpg"
+            alt="Garden dashboard"
+            fill
+            className="object-cover"
+          />
+        </div>
+
       </section>
+      <div className="h-[2px] bg-terra w-full" />
+
 
       {/* ── Journal posts ── */}
       <section className="bg-white border-t border-sand/20">
@@ -267,8 +288,9 @@ export default async function HomePage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {posts.map(post => (
-                <article key={post.id} className="group cursor-pointer">
+              {posts.map((post, i) => (
+                <ScrollReveal key={post.id} delay={i * 0.12}>
+                <article className="group cursor-pointer">
                   <div className="mb-3">
                     <span className="inline-block font-heading text-xs md:text-sm uppercase tracking-widest text-terra bg-terra/10 px-3 py-1 rounded-full">
                       {post.category}
@@ -284,6 +306,7 @@ export default async function HomePage() {
                     {new Date(post.published_at).toLocaleDateString('en-ZA', { day: 'numeric', month: 'long', year: 'numeric' })}
                   </p>
                 </article>
+                </ScrollReveal>
               ))}
             </div>
           )}
@@ -291,20 +314,20 @@ export default async function HomePage() {
       </section>
 
       {/* ── Tech stack ── */}
-      <footer className="bg-terra">
+      <footer className="bg-mist border-t border-sand/20">
         <div className="max-w-6xl mx-auto px-4 md:px-16 py-10 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="font-heading text-xs md:text-sm uppercase tracking-widest text-white/60">Built with</p>
+          <p className="font-heading text-xs md:text-sm uppercase tracking-widest text-sand">Built with</p>
           <div className="flex flex-wrap gap-2 justify-center">
             {TECH_STACK.map(tech => (
               <span
                 key={tech}
-                className="font-heading text-xs font-medium text-white/80 bg-white/10 border border-white/20 px-3 py-1 rounded-full"
+                className="font-heading text-xs font-medium text-plum/70 bg-plum/5 border border-plum/10 px-3 py-1 rounded-full"
               >
                 {tech}
               </span>
             ))}
           </div>
-          <p className="font-body text-xs italic text-white/40">Cape Town, {new Date().getFullYear()}</p>
+          <p className="font-body text-xs italic text-plum/40">Cape Town, {new Date().getFullYear()}</p>
         </div>
       </footer>
 

@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { createServerSupabaseClient } from '@/lib/supabase-server';
 import { Zone, PlantPosition, WateringLog, Plant } from '@/lib/types';
 import { fetchWeather } from '@/lib/weather';
@@ -6,7 +7,6 @@ import WeatherWidget from '@/components/dashboard/WeatherWidget';
 import HealthSnapshot from '@/components/dashboard/HealthSnapshot';
 import BloomCalendar from '@/components/dashboard/BloomCalendar';
 import WateringChart from '@/components/dashboard/WateringChart';
-import HeroCircle from '@/components/dashboard/HeroCircle';
 import ThisMonthBloom from '@/components/dashboard/ThisMonthBloom';
 import WateringStatus, { ZoneWaterStatus } from '@/components/dashboard/WateringStatus';
 
@@ -138,14 +138,23 @@ export default async function DashboardPage() {
   }));
 
   return (
-    <div className="min-h-screen bg-mist">
+    <div className="relative min-h-screen bg-mist">
       <SiteNav />
 
-      <main className="max-w-5xl mx-auto px-6 pt-48 pb-12 space-y-5">
+      {/* Decorative background image — top-left, behind all content */}
+      <div className="absolute top-20 left-0 w-[35vw] aspect-square overflow-hidden z-0 pointer-events-none">
+        <Image
+          src="/grace-brauteseth-RotC_MCcyZA-unsplash.jpg"
+          alt=""
+          fill
+          className="object-cover object-center"
+        />
+      </div>
+
+      <main className="relative z-10 max-w-5xl mx-auto px-6 pt-48 pb-12 space-y-5">
 
         {/* Top row: 4 cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
-          <HeroCircle imageUrl={heroImageUrl} />
           <WeatherWidget weather={weather} />
           <WateringChart chartData={chartData} recentActivity={recentActivity} />
           <HealthSnapshot
@@ -155,18 +164,14 @@ export default async function DashboardPage() {
             strugglingList={strugglingList}
             deadList={deadList}
           />
+          <ThisMonthBloom plants={bloomingNow} monthName={monthName} />
         </div>
 
         {/* Bloom calendar */}
         <BloomCalendar plants={bloomPlants} />
 
-        {/* Bottom row: this month bloom + watering status */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
-          <ThisMonthBloom plants={bloomingNow} monthName={monthName} />
-          <div className="md:col-span-3">
-            <WateringStatus zones={zoneStatuses} />
-          </div>
-        </div>
+        {/* Bottom row: watering status full width */}
+        <WateringStatus zones={zoneStatuses} />
 
       </main>
     </div>

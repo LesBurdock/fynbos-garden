@@ -2,8 +2,8 @@
 
 @theme inline {
   /* Fonts — must use inline because values reference CSS variables */
-  --font-heading: var(--font-hanken);
-  --font-body: var(--font-fraunces);
+  --font-heading: var(--font-manrope);
+  --font-body: var(--font-sora);
 }
 
 @layer base {
