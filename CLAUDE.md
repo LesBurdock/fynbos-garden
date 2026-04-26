@@ -40,9 +40,15 @@ Update it as decisions change during the build.
 - [x] `/garden` map polish — botanical SVG icon (`file.svg`) as plant position dots with health-status colour (green/amber/red); white zone fills; windsock wind indicator with `wind_icon.png`; seating areas (top-right, bottom-left); stairs dashed rectangle; larger invisible hit targets; health status bar above map; nav links in header
 - [x] Dashboard polish — DashboardNav updated to match site-wide style; HealthSnapshot and ThisMonthBloom positions swapped; HealthSnapshot top-aligned; `pt-48` content offset for nav clearance
 - [x] Site-wide nav — consistent style across `/`, `/garden`, `/dashboard`: Hanken Grotesk base, `max-w-7xl px-16`, plum/70 links
+- [x] Admin entry point — discreet "Admin" link in homepage footer (`text-plum/25`) links to `/admin/login`
+- [x] `app/admin/layout.tsx` — plum top nav bar wrapping all authenticated admin pages; links to Map, Plants, Log, Tasks, Journal; "← Back to site" link; login page bypasses the nav and renders its own full-page layout
+- [x] `/zones` — public page showing each zone with overlapping circle collage of plant images (health-status ring, hover tooltip), zone details (substrate, container, drainage), plant list with health badges; "Zones" added to SiteNav and GardenMap nav
+- [x] `next.config.ts` — remote image hostnames added: `inaturalist-open-data.s3.amazonaws.com`, `static.inaturalist.org`
+- [x] `/journal` — public journal list: posts ordered by date, category badge, excerpt, click to read inline (no separate route); `JournalList` + `JournalPostView` components; content rendered as plain text (not MDX)
+- [x] `/garden` map — plant position dots replaced with circular plant photo thumbnails (SVG `<image>` + `<clipPath>`); health-status colour ring + white gap border; dashed pulse ring on selected; falls back to semi-transparent coloured dot if no `image_url`
 
 ### Up next (follow this order)
-- [ ] `/journal` — public journal list
+- [ ] `/journal` — upgrade content rendering to use `next-mdx-remote` for proper markdown (bold, headings, lists)
 - [ ] Mobile responsive pass
 - [ ] Polish: loading states, error states, OG tags, Lighthouse audit
 

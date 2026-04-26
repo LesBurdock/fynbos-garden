@@ -327,7 +327,12 @@ export default async function HomePage() {
               </span>
             ))}
           </div>
-          <p className="font-body text-xs italic text-plum/40">Cape Town, {new Date().getFullYear()}</p>
+          <div className="flex items-center gap-4">
+            <p className="font-body text-xs italic text-plum/40">Cape Town, {new Date().getFullYear()}</p>
+            <Link href="/admin/login" className="font-heading text-xs text-plum/25 hover:text-plum/50 transition-colors">
+              Admin
+            </Link>
+          </div>
         </div>
       </footer>
 

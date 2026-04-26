@@ -21,6 +21,7 @@ export default function SiteNav({ variant = 'dark', solidBg = false }: { variant
         {/* Desktop links */}
         <div className={`hidden md:flex gap-6 font-heading text-base font-medium`}>
           <Link href="/garden" className={`transition-colors ${links}`}>Map</Link>
+          <Link href="/zones" className={`transition-colors ${links}`}>Zones</Link>
           <Link href="/dashboard" className={`transition-colors ${links}`}>Dashboard</Link>
           <Link href="/journal" className={`transition-colors ${links}`}>Journal</Link>
         </div>
@@ -47,14 +48,14 @@ export default function SiteNav({ variant = 'dark', solidBg = false }: { variant
       {/* Mobile dropdown */}
       {open && (
         <div className="md:hidden bg-mist border-t border-sand/20 px-6 py-5 flex flex-col gap-5">
-          {['/', '/garden', '/dashboard', '/journal'].map((href, i) => (
+          {(['/', '/garden', '/zones', '/dashboard', '/journal'] as const).map((href, i) => (
             <Link
               key={href}
               href={href}
               className="font-heading text-base font-medium text-plum/70 hover:text-plum transition-colors"
               onClick={() => setOpen(false)}
             >
-              {['Home', 'Map', 'Dashboard', 'Journal'][i]}
+              {['Home', 'Map', 'Zones', 'Dashboard', 'Journal'][i]}
             </Link>
           ))}
         </div>
