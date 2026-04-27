@@ -61,6 +61,7 @@ export default function GardenMap({ zones, positions, plants, careLogs }: Props)
           {/* Desktop links */}
           <div className="hidden md:flex items-center gap-4 font-heading text-sm text-plum/60">
             <Link href="/" className="hover:text-plum transition-colors">Home</Link>
+            <Link href="/zones" className="hover:text-plum transition-colors">Zones</Link>
             <Link href="/dashboard" className="hover:text-plum transition-colors">Dashboard</Link>
             <Link href="/journal" className="hover:text-plum transition-colors">Journal</Link>
           </div>
@@ -78,6 +79,7 @@ export default function GardenMap({ zones, positions, plants, careLogs }: Props)
         {navOpen && (
           <div className="md:hidden border-t border-sand/20 px-6 py-4 flex flex-col gap-4">
             <Link href="/" className="font-heading text-sm font-medium text-plum/70 hover:text-plum transition-colors" onClick={() => setNavOpen(false)}>Home</Link>
+            <Link href="/zones" className="font-heading text-sm font-medium text-plum/70 hover:text-plum transition-colors" onClick={() => setNavOpen(false)}>Zones</Link>
             <Link href="/dashboard" className="font-heading text-sm font-medium text-plum/70 hover:text-plum transition-colors" onClick={() => setNavOpen(false)}>Dashboard</Link>
             <Link href="/journal" className="font-heading text-sm font-medium text-plum/70 hover:text-plum transition-colors" onClick={() => setNavOpen(false)}>Journal</Link>
           </div>

@@ -78,6 +78,17 @@ export default function RoofMap({
         <marker id="wind-arrow" markerWidth="5" markerHeight="5" refX="2.5" refY="5" orient="auto">
           <polygon points="0,0 5,0 2.5,5" fill="#94a3b8" />
         </marker>
+        {/* Clip paths for plant image circles */}
+        {positions.map(pos => {
+          const cx = pos.svg_xy.x + OFFSET;
+          const cy = pos.svg_xy.y + OFFSET;
+          const r = pos.id === selectedPositionId ? 16 : 13;
+          return (
+            <clipPath key={pos.id} id={`clip-${pos.id}`}>
+              <circle cx={cx} cy={cy} r={r} />
+            </clipPath>
+          );
+        })}
       </defs>
 
       {/* Roof background */}
@@ -199,6 +210,8 @@ export default function RoofMap({
         const cy = pos.svg_xy.y + OFFSET;
         const isSelected = pos.id === selectedPositionId;
         const color = DOT_COLORS[pos.health_status] ?? '#78716c';
+        const r = isSelected ? 16 : 13;
+        const imageUrl = pos.plants?.image_url;
         return (
           <g
             key={pos.id}
@@ -210,15 +223,28 @@ export default function RoofMap({
             style={{ cursor: 'pointer' }}
             aria-label={pos.plants ? `${pos.plants.name} - ${pos.health_status}` : undefined}
           >
-            {/* Invisible hit area — larger than the icon for easier clicking */}
-            <circle cx={cx} cy={cy} r={18} fill="transparent" />
-            {/* Icon */}
-            <g transform={`translate(${cx}, ${cy}) scale(${isSelected ? ICON_SCALE * 1.3 : ICON_SCALE}) translate(-512, -512)`}>
-              {isSelected && (
-                <circle cx={512} cy={512} r={600} fill="white" fillOpacity={0.3} />
-              )}
-              <path d={PLANT_ICON_PATH} fill={color} />
-            </g>
+            {/* Invisible hit area */}
+            <circle cx={cx} cy={cy} r={r + 6} fill="transparent" />
+            {/* Health-status ring */}
+            <circle cx={cx} cy={cy} r={r + 2.5} fill={color} />
+            {/* White gap */}
+            <circle cx={cx} cy={cy} r={r + 1} fill="white" />
+            {/* Plant image or fallback dot */}
+            {imageUrl ? (
+              <image
+                href={imageUrl}
+                x={cx - r} y={cy - r}
+                width={r * 2} height={r * 2}
+                clipPath={`url(#clip-${pos.id})`}
+                preserveAspectRatio="xMidYMid slice"
+              />
+            ) : (
+              <circle cx={cx} cy={cy} r={r} fill={color} fillOpacity={0.35} />
+            )}
+            {/* Selected pulse ring */}
+            {isSelected && (
+              <circle cx={cx} cy={cy} r={r + 6} fill="none" stroke={color} strokeWidth={1.5} strokeDasharray="3 2" />
+            )}
           </g>
         );
       })}
