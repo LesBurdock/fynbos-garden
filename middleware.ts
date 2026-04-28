@@ -29,7 +29,8 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user && request.nextUrl.pathname !== '/admin/login') {
+  const publicAdminPaths = ['/admin/login', '/admin/reset-password'];
+  if (!user && !publicAdminPaths.includes(request.nextUrl.pathname)) {
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = '/admin/login';
     return NextResponse.redirect(loginUrl);
